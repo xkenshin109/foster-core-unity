@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C7B7D9A-2621-4D60-9C5C-8AA3368E608B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FosterServer.Core</RootNamespace>
+    <AssemblyName>FosterServer.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>false</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>NU5128</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.8f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <PrivateAssets>none</PrivateAssets>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.8f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <PrivateAssets>none</PrivateAssets>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataModels\Tcp.cs" />
+    <Compile Include="DataModels\Udp.cs" />
+    <Compile Include="Enumerations\EnumHelper.cs" />
+    <Compile Include="Enumerations\EventManagerEvent.cs" />
+    <Compile Include="GUIActions\NewGame.cs" />
+    <Compile Include="Interface\ITileSet.cs" />
+    <Compile Include="Logging\FosterLog.cs" />
+    <Compile Include="Manager\EventManager.cs" />
+    <Compile Include="Manager\GameEngine.cs" />
+    <Compile Include="Manager\MapManager.cs" />
+    <Compile Include="Manager\MouseManager.cs" />
+    <Compile Include="Manager\PlayerManager.cs" />
+    <Compile Include="Models\EventManagerModels.cs" />
+    <Compile Include="Models\GameEntity.cs" />
+    <Compile Include="Models\LevelModel.cs" />
+    <Compile Include="Networking\Constants.cs" />
+    <Compile Include="Networking\Client.cs" />
+    <Compile Include="Networking\Server.cs" />
+    <Compile Include="DataModels\Packet.cs" />
+    <Compile Include="Models\GridPoint.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ClientSend.cs" />
+    <Compile Include="Utilities\ClientHandle.cs" />
+    <Compile Include="Pathfinding\Calculation.cs" />
+    <Compile Include="Utilities\ServerHandle.cs" />
+    <Compile Include="Utilities\ServerSend.cs" />
+    <Compile Include="Utilities\ThreadManager.cs" />
+    <Compile Include="Utilities\UtilityExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="nuget.config" />
+    <None Include="FosterServer.Core.nuspec" />
+    <None Include="nugeticon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="unity_tiletesting.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FosterCompileSettings.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+  	 $(PostBuildEventDependsOn);
+  	 PostBuildMacros;
+     </PostBuildEventDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>@echo off
+SET unityProject=G:\Unity Projects\TilesetSupport\Assets\CustomLibrary
+
+echo "%25unityProject%25"
+
+if "$(ConfigurationName)" == "Release" (
+echo Copying over FosterServer.Core.dll into Unity
+xcopy "FosterServer.Core.dll" "%25unityProject%25" /y
+)
+if "$(ConfigurationName)" == "Debug" (
+echo Copying over FosterServer.Core.dll into Unity
+xcopy "FosterServer.Core.dll" "%25unityProject%25" /y
+xcopy "FosterServer.Core.pdb" "%25unityProject%25" /y
+)</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
+</Project>

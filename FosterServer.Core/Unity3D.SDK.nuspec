@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Unity3D.SDK</id>
+    <version>2021.1.14.1</version>
+    <title>Unity3D dll References</title>
+    <authors>Unity Technologies</authors>
+    <owners>Unity Technologies</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://store.unity.com/</licenseUrl>
+    <projectUrl>https://unity3d.com/</projectUrl>
+    <iconUrl>https://cdn4.iconfinder.com/data/icons/logos-brands-5/24/unity-512.png</iconUrl>
+    <description>Unity3D assemblies from Editor/Data/Managed.</description>
+    <summary>UnityEngine.dll
+UnityEditor.dll</summary>
+    <releaseNotes>https://unity3d.com/unity/whats-new/2021.1.14</releaseNotes>
+    <copyright>Unity Technologies</copyright>
+    <language></language>
+    <tags>UnityEngine UnityEditor Unity Unity3D</tags>
+  </metadata>
+</package>
