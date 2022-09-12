@@ -6,16 +6,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace FosterServer.Core.Manager
 {
-    [RequireComponent(typeof(Tilemap))]
-    [RequireComponent(typeof(Grid))]
-    [RequireComponent(typeof(TilemapRenderer))]
-    [DebuggerDisplay("MapManager: MapId({MapId}) GameEntities({GameEntities.Count()}")]
-    public class MapManager : MonoBehaviour, IDisposable
+    [DebuggerDisplay("MapManager: MapId({MapId}) GameEntities({TotalEntities})")]
+    public class MapManager : IDisposable
     {
         #region Private Members
 
@@ -25,12 +20,15 @@ namespace FosterServer.Core.Manager
         #endregion
 
         #region Public Members
-        public SpriteRenderer m_backgroundLayer1;
-        public SpriteRenderer m_backgroundLayer2;
-        public SpriteRenderer m_backgroundLayer3;
+
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Total Entities on Map
+        /// </summary>
+        public int TotalEntities => GameEntities.Count();
 
         /// <summary>
         /// Game Entities associated to the Map
@@ -57,17 +55,6 @@ namespace FosterServer.Core.Manager
 
                 return m_mapId; 
             }
-        }
-
-        /// <summary>
-        /// Tilemap for Entities
-        /// </summary>
-        public Tilemap Tilemap 
-        { 
-            get
-            {
-                return this.gameObject.GetComponent<Tilemap>();
-            } 
         }
  
         #endregion

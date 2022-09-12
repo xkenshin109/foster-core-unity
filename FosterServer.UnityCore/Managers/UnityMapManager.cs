@@ -8,9 +8,16 @@ using UnityEngine;
 using FosterServer.Core.Enumerations;
 using FosterServer.Core.Models;
 using FosterServer.Core.Logging;
+using UnityEngine.Tilemaps;
+using System.Diagnostics;
+using FosterServer.UnityCore.Models;
 
 namespace FosterServer.UnityCore.Managers
 {
+    [RequireComponent(typeof(Tilemap))]
+    [RequireComponent(typeof(Grid))]
+    [RequireComponent(typeof(TilemapRenderer))]
+    [DebuggerDisplay("MapManager: MapId({MapId}) GameEntities({GameMap.TotalEntities})")]
     public class UnityMapManager : MonoBehaviour
     {
         #region Private Members
@@ -42,11 +49,11 @@ namespace FosterServer.UnityCore.Managers
             string a_method = "LoadPreloadedGameEntities";
             foreach (Transform children in this.transform)
             {
-                GameEntity childEntity;
-                if (children.TryGetComponent<GameEntity>(out childEntity))
+                UnityEntity childEntity;
+                if (children.TryGetComponent<UnityEntity>(out childEntity))
                 {
                     FosterLog.Log($"{a_method} - Game Entity Found {children.name}");
-                    GameMap.AddGameEntity(childEntity);
+                    GameMap.AddGameEntity(new EntityModel { Entity = childEntity.Entity});
                 }
             }
         }

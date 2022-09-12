@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FosterServer.Core.Pathfinding;
 using FosterServer.Core.Models;
+using FosterServer.Core.Manager;
+
 namespace FosterServerUdp
 {
     public class Program
