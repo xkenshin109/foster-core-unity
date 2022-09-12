@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-namespace FosterServer.Core.GUIActions
+namespace FosterServer.UnityCore.UserInterface.Menu
 {
     [RequireComponent(typeof(Button))]
     public class NewGame : MonoBehaviour
@@ -25,7 +25,7 @@ namespace FosterServer.Core.GUIActions
             Button = this.gameObject.GetComponent<Button>();
             Button.clicked += StartNewGame;
         }
-         
+
         void StartNewGame()
         {
             SceneManager.LoadScene(LevelToLoad, LoadSceneMode.Single);

@@ -68,7 +68,6 @@
     <Compile Include="DataModels\Udp.cs" />
     <Compile Include="Enumerations\EnumHelper.cs" />
     <Compile Include="Enumerations\EventManagerEvent.cs" />
-    <Compile Include="GUIActions\NewGame.cs" />
     <Compile Include="Interface\ITileSet.cs" />
     <Compile Include="Logging\FosterLog.cs" />
     <Compile Include="Manager\GameEngine.cs" />

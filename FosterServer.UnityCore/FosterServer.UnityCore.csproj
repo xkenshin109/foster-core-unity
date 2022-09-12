@@ -64,6 +64,7 @@
     <Compile Include="Managers\UnityMapManager.cs" />
     <Compile Include="Models\UnityEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserInterface\Menu\NewGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -74,7 +75,9 @@
       <Name>FosterServer.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UserInterface\Command\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>@echo off
