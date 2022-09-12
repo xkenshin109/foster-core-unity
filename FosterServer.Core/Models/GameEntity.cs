@@ -12,12 +12,11 @@ using UnityEngine.Tilemaps;
 namespace FosterServer.Core.Models
 {
     [DebuggerDisplay("GameEntity: Id({EntityId}) Position({X},{Y}) Size({EntitySize.Width},{EntitySize.Height}) Passable({CanEntityPassThrough})")]
-    public class GameEntity : MonoBehaviour, IDisposable
+    public class GameEntity : IDisposable
     {
         #region Private Members
 
         private Guid m_entityId;
-        private Tile m_TileSprite;
         private bool m_isInteractable = false;
         private bool m_canEntityPassThrough = false;
         private float m_rotation = 0.0f;
@@ -40,11 +39,6 @@ namespace FosterServer.Core.Models
                 return m_entityId; 
             }
         }
-        /// <summary>
-        /// Sprite Image - TileMap
-        /// GameEntity - GameObject **Deprecated**
-        /// </summary>
-        public Sprite SpriteImage { get; set; }
 
         /// <summary>
         /// Can an Entity Pass Through
@@ -149,23 +143,6 @@ namespace FosterServer.Core.Models
         }
 
         /// <summary>
-        /// Tiles Sprite
-        /// </summary>
-        public Tile TileSprite
-        {
-            get
-            {
-                if (SpriteImage == null) return null;
-                if (m_TileSprite == null)
-                {
-                    m_TileSprite = ScriptableObject.CreateInstance<Tile>();
-                    m_TileSprite.sprite = SpriteImage;
-                }
-                return m_TileSprite;
-            }
-        }
-
-        /// <summary>
         /// Points where this entity exists on Grid
         /// </summary>
         public List<GridPoint> GridPoints { get { return m_gridPoints; } }
@@ -201,6 +178,11 @@ namespace FosterServer.Core.Models
 
         #region Constructors
 
+        public GameEntity()
+        {
+
+        }
+
         public GameEntity(int a_x, int a_y)
             :this(a_x, a_y, new Size(1,1))
         {
@@ -221,13 +203,7 @@ namespace FosterServer.Core.Models
 
         public GameEntity(int a_x, int a_y, Size a_entitySize, float a_rotation, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
         {
-            Position = new Vector2Int(a_x, a_y);
-            EntitySize = a_entitySize;
-            Rotation = a_rotation;
-            IsInteractable = a_isInteractable;
-            CanEntityPassThrough = a_canEntityPassThrough;
-
-            SetGridPoints();
+            Initialize(a_x, a_y, a_entitySize, a_rotation, a_isInteractable, a_canEntityPassThrough);
         }
 
         #endregion
@@ -252,6 +228,25 @@ namespace FosterServer.Core.Models
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Initialize Game Entity
+        /// </summary>
+        /// <param name="a_X"></param>
+        /// <param name="a_Y"></param>
+        /// <param name="a_entitySize"></param>
+        /// <param name="a_rotation"></param>
+        /// <param name="a_isInteractable"></param>
+        /// <param name="a_canEntityPassThrough"></param>
+        public void Initialize(int a_X, int a_Y, Size a_entitySize, float a_rotation = 0, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
+        {
+            Position = new Vector2Int(a_X, a_Y);
+            EntitySize = a_entitySize;
+            Rotation = a_rotation;
+            IsInteractable = a_isInteractable;
+            CanEntityPassThrough = a_canEntityPassThrough;
+            SetGridPoints();
+        }
 
         /// <summary>
         /// Toggles Entities Ability to Pass Through
@@ -307,38 +302,12 @@ namespace FosterServer.Core.Models
             return bHasGridPointIntersect;
         }
 
-        public void StartListener()
+        public void Dispose()
         {
             
         }
 
-        public void StopListener()
-        {
-
-        }
-
-        public void Dispose()
-        {
-            StopListener();
-        }
-
-
         #endregion
 
-        #region Unity Methods
-        
-        private void OnDestroy() 
-        {
-            EventsManager.Instance.TriggerEvent(Enumerations.EventManagerEvent.Removed, new EntityModel { Entity = this }, EntityId);
-            Dispose();
-            StopListener();
-        }
-
-        private void Awake()
-        {
-            StartListener();
-            EventsManager.Instance.TriggerEvent(Enumerations.EventManagerEvent.Created, new EntityModel { Entity = this }, EntityId);
-        }
-        #endregion
     }
 }

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FosterServer.Core", "..\Fos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FosterUnitTest", "..\FosterUnitTest\FosterUnitTest.csproj", "{6B3EB391-B579-4F4B-8D0B-A05071A8BA5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FosterServer.UnityCore", "..\FosterServer.UnityCore\FosterServer.UnityCore.csproj", "{4BE49154-5293-4D1A-842A-47C8CD3D166B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

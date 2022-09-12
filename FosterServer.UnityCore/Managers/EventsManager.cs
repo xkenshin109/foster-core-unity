@@ -1,5 +1,6 @@
 ﻿using FosterServer.Core.Enumerations;
 using FosterServer.Core.Logging;
+using FosterServer.Core.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace FosterServer.Core.Manager
+namespace FosterServer.UnityCore.Managers
 {
     [System.Serializable]
     public class EventManagerParameter : UnityEvent<object>
@@ -248,4 +249,5 @@ namespace FosterServer.Core.Manager
 
         #endregion
     }
+
 }

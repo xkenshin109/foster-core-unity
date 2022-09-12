@@ -73,14 +73,10 @@
     <Compile Include="GUIActions\NewGame.cs" />
     <Compile Include="Interface\ITileSet.cs" />
     <Compile Include="Logging\FosterLog.cs" />
-    <Compile Include="Manager\EventManager.cs" />
     <Compile Include="Manager\GameEngine.cs" />
     <Compile Include="Manager\MapManager.cs" />
-    <Compile Include="Manager\MouseManager.cs" />
-    <Compile Include="Manager\PlayerManager.cs" />
     <Compile Include="Models\EventManagerModels.cs" />
     <Compile Include="Models\GameEntity.cs" />
-    <Compile Include="Models\LevelModel.cs" />
     <Compile Include="Networking\Constants.cs" />
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Networking\Server.cs" />

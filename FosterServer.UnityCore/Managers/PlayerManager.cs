@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace FosterServer.Core.Manager
+namespace FosterServer.UnityCore.Managers
 {
     /// <summary>
     /// Player Controller

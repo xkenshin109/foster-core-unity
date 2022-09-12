@@ -82,45 +82,14 @@ namespace FosterServer.Core.Manager
         #endregion
 
         #region Private Methods
-        private void LoadPreloadedGameEntities()
-        {
-            string a_method = "LoadPreloadedGameEntities";
-            foreach(Transform children in this.transform)
-            {
-                GameEntity childEntity;
-                if(children.TryGetComponent<GameEntity>(out childEntity))
-                {
-                    FosterLog.Log($"{a_method} - Game Entity Found {children.name}");
-                    AddGameEntity(childEntity);
-                }
-            }
-        }
 
         #endregion
 
         #region Unity Methods
 
-        private void Awake()
-        {
-            LoadPreloadedGameEntities();
-            StartListening();
-        }
-
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Map Manager - Attach Game Logic to Listeners
-        /// Core Events for Game Engine
-        /// </summary>
-        public void StartListening()
-        {
-            EventsManager.Instance.StartListening(Enumerations.EventManagerEvent.Created, AddGameEntity, MapId);
-            EventsManager.Instance.StartListening(Enumerations.EventManagerEvent.Action, GameEntityAction, MapId);
-            EventsManager.Instance.StartListening(Enumerations.EventManagerEvent.Position, GameEntityPosition, MapId);
-            EventsManager.Instance.StartListening(Enumerations.EventManagerEvent.Removed, GameEntityRemoved, MapId);
-        }
 
         /// <summary>
         /// Add Game Entities for the Current Map/Level
@@ -173,16 +142,9 @@ namespace FosterServer.Core.Manager
 
         public void Dispose()
         {
-            StopListening();
+
         }
 
-        public void StopListening()
-        {
-            EventsManager.Instance.StopListening(Enumerations.EventManagerEvent.Created, AddGameEntity, MapId);
-            EventsManager.Instance.StopListening(Enumerations.EventManagerEvent.Action, GameEntityAction, MapId);
-            EventsManager.Instance.StopListening(Enumerations.EventManagerEvent.Position, GameEntityPosition, MapId);
-            EventsManager.Instance.StopListening(Enumerations.EventManagerEvent.Removed, GameEntityRemoved, MapId);
-        }
         #endregion
 
     }

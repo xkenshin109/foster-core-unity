@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace FosterServer.Core.Manager
 {
-    public class GameEngine : MonoBehaviour
+    public class GameEngine
     {
     }
 }
