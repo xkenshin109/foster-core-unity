@@ -33,6 +33,12 @@ namespace FosterServer.UnityCore.Managers
 
         #endregion
 
+        #region Public Members
+
+        public static float m_speed = 2;
+
+        #endregion
+
         #region Properties
 
         public static EventsManager Instance

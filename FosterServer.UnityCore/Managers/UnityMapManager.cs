@@ -26,6 +26,9 @@ namespace FosterServer.UnityCore.Managers
 
         #region Public Members
 
+        public static float m_xOffset = 0.5f;
+        public static float m_yOffset = 0.5f;
+
         #endregion
 
         #region Properties
@@ -39,6 +42,11 @@ namespace FosterServer.UnityCore.Managers
         /// Map ID
         /// </summary>
         public Guid MapId => GameMap.MapId;
+
+        /// <summary>
+        /// Offset Vector for Map
+        /// </summary>
+        public static Vector3 OffSetPosition => new Vector3(m_xOffset, m_yOffset, 1);
 
         #endregion
 

@@ -22,8 +22,7 @@ namespace FosterServer.Core.Models
         private float m_rotation = 0.0f;
         private Size m_entitySize;
         private List<GridPoint> m_gridPoints = new List<GridPoint>();
-        private Vector2Int m_position;
-
+        private Vector3 m_vector3position;
         #endregion
 
         #region Properties
@@ -150,27 +149,61 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// X Position of Entity
         /// </summary>
-        public int X => m_position.x;
+        public float X => m_vector3position.x;
 
         /// <summary>
         /// Y Position of Entity
         /// </summary>
-        public int Y => m_position.y;
+        public float Y => m_vector3position.y;
 
         /// <summary>
         /// Position of Game Entity
         /// </summary>
-        public Vector2Int Position { 
+        public Vector2Int Vector2IntPosition 
+        { 
             get
             {
-                return m_position;
+                return new Vector2Int((int) m_vector3position.x, (int) m_vector3position.y);
+            }
+        }
+
+        /// <summary>
+        /// Vector 2 Position
+        /// </summary>
+        public Vector2 Vector2Position
+        {
+            get
+            {
+                return new Vector2(m_vector3position.x, m_vector3position.y);
+            }
+        }
+
+        /// <summary>
+        /// Vector 3 Position
+        /// </summary>
+        public Vector3 Vector3Position
+        {
+            get
+            {
+                return m_vector3position;
             }
             set
             {
-                if(m_position != value)
+                if (m_vector3position != value)
                 {
-                    m_position = value;
+                    m_vector3position = value;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Vector 3 Int Position
+        /// </summary>
+        public Vector3Int Vector3IntPosition
+        {
+            get
+            {
+                return new Vector3Int((int)m_vector3position.x, (int)m_vector3position.y, (int)m_vector3position.z);
             }
         }
 
@@ -212,11 +245,11 @@ namespace FosterServer.Core.Models
 
         private void SetGridPoints()
         {
-            for (int height = Position.y; height < Position.y + EntitySize.Height; height++)
+            for (float height = Vector3Position.y; height < Vector3Position.y + EntitySize.Height; height+=1)
             {
-                for (int width = Position.x; width < Position.x + EntitySize.Width; width++)
+                for (float width = Vector3Position.x; width < Vector3Position.x + EntitySize.Width; width+=1)
                 {
-                    GridPoint entityPoint = new GridPoint(width, height);
+                    GridPoint entityPoint = new GridPoint((int)width, (int)height);
                     if (!GridPoints.Contains(entityPoint))
                     {
                         m_gridPoints.Add(entityPoint);
@@ -240,7 +273,7 @@ namespace FosterServer.Core.Models
         /// <param name="a_canEntityPassThrough"></param>
         public void Initialize(int a_X, int a_Y, Size a_entitySize, float a_rotation = 0, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
         {
-            Position = new Vector2Int(a_X, a_Y);
+            Vector3Position = new Vector3(a_X, a_Y);
             EntitySize = a_entitySize;
             Rotation = a_rotation;
             IsInteractable = a_isInteractable;
@@ -260,9 +293,9 @@ namespace FosterServer.Core.Models
         /// Set Position of Entity
         /// </summary>
         /// <param name="a_position"></param>
-        public void SetPosition(Vector2Int a_position)
+        public void SetPosition(Vector3 a_position)
         {
-            m_position = a_position;
+            m_vector3position = a_position;
         }
 
         /// <summary>
@@ -270,9 +303,9 @@ namespace FosterServer.Core.Models
         /// </summary>
         /// <param name="a_x"></param>
         /// <param name="a_y"></param>
-        public void SetPosition(int a_x, int a_y)
+        public void SetPosition(int a_x, int a_y, int a_z = 1)
         {
-            SetPosition(new Vector2Int(a_x, a_y));
+            SetPosition(new Vector3(a_x, a_y, a_z));
         }
 
         /// <summary>

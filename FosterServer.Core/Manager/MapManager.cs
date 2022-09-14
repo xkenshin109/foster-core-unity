@@ -13,7 +13,7 @@ namespace FosterServer.Core.Manager
     public class MapManager : IDisposable
     {
         #region Private Members
-
+        
         private Guid m_mapId;
         private List<GameEntity> m_gameEntities = new List<GameEntity>();
 
@@ -56,7 +56,7 @@ namespace FosterServer.Core.Manager
                 return m_mapId; 
             }
         }
- 
+
         #endregion
 
         #region Constructors
@@ -110,7 +110,7 @@ namespace FosterServer.Core.Manager
             GameEntity gameEntity = m_gameEntities.FirstOrDefault(x => x.EntityId == entity.Entity.EntityId);
             if(gameEntity != null)
             {
-                gameEntity.SetPosition(entity.Entity.Position);
+                gameEntity.SetPosition(entity.Entity.Vector3Position);
             }
         }
 
