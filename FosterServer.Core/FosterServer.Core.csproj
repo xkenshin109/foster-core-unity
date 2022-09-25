@@ -68,8 +68,10 @@
     <Compile Include="DataModels\Udp.cs" />
     <Compile Include="Enumerations\EnumHelper.cs" />
     <Compile Include="Enumerations\EventManagerEvent.cs" />
+    <Compile Include="Interface\IGameEntityManager.cs" />
     <Compile Include="Logging\FosterLog.cs" />
     <Compile Include="Manager\GameEngine.cs" />
+    <Compile Include="Manager\LevelExperienceManager.cs" />
     <Compile Include="Manager\MapManager.cs" />
     <Compile Include="Models\EventManagerModels.cs" />
     <Compile Include="Models\GameEntity.cs" />
@@ -102,9 +104,7 @@
   <ItemGroup>
     <None Include="FosterCompileSettings.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEventDependsOn>
