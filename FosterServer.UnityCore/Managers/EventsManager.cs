@@ -18,6 +18,7 @@ namespace FosterServer.UnityCore.Managers
     }
 
     [RequireComponent(typeof(MouseManager))]
+    [RequireComponent(typeof(KeyboardManager))]
     public class EventsManager : MonoBehaviour
     {
         #region Events
@@ -246,11 +247,11 @@ namespace FosterServer.UnityCore.Managers
 
         private void OnDestroy()
         {
-            foreach (var key in Instance.m_Events.Keys)
-            {
-                EventManagerParameter uEvent = Instance.m_Events[key];
-                uEvent.RemoveAllListeners();
-            }
+            //foreach (var key in Instance.m_Events.Keys)
+            //{
+            //    EventManagerParameter uEvent = Instance.m_Events[key];
+            //    uEvent.RemoveAllListeners();
+            //}
         }
 
         #endregion

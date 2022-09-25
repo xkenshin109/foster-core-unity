@@ -13,7 +13,7 @@ namespace FosterServer.Core.Manager
     public class MapManager : IDisposable
     {
         #region Private Members
-        
+
         private Guid m_mapId;
         private List<GameEntity> m_gameEntities = new List<GameEntity>();
 
@@ -33,12 +33,12 @@ namespace FosterServer.Core.Manager
         /// <summary>
         /// Game Entities associated to the Map
         /// </summary>
-        public List<GameEntity> GameEntities 
-        { 
+        public List<GameEntity> GameEntities
+        {
             get
             {
                 return m_gameEntities;
-            } 
+            }
         }
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace FosterServer.Core.Manager
         /// </summary>
         public Guid MapId
         {
-            get 
+            get
             {
                 if (m_mapId == Guid.Empty)
                 {
                     m_mapId = Guid.NewGuid();
                 }
 
-                return m_mapId; 
+                return m_mapId;
             }
         }
 
@@ -63,7 +63,7 @@ namespace FosterServer.Core.Manager
 
         public MapManager()
         {
-            
+
         }
 
         #endregion
@@ -85,7 +85,7 @@ namespace FosterServer.Core.Manager
         public void AddGameEntity(object a_entity)
         {
             EntityModel addEntity = (EntityModel)a_entity;
-            if (!m_gameEntities.Any(x=>x.EntityId == addEntity.Entity.EntityId))
+            if (!m_gameEntities.Any(x => x.EntityId == addEntity.Entity.EntityId))
             {
                 m_gameEntities.Add(addEntity.Entity);
             }
@@ -108,7 +108,7 @@ namespace FosterServer.Core.Manager
         {
             EntityModel entity = (EntityModel)a_entity;
             GameEntity gameEntity = m_gameEntities.FirstOrDefault(x => x.EntityId == entity.Entity.EntityId);
-            if(gameEntity != null)
+            if (gameEntity != null)
             {
                 gameEntity.SetPosition(entity.Entity.Vector3Position);
             }
@@ -121,7 +121,7 @@ namespace FosterServer.Core.Manager
         public void GameEntityRemoved(object a_entity)
         {
             EntityModel entity = (EntityModel)a_entity;
-            if(m_gameEntities.Any(x=>x.EntityId == entity.Entity.EntityId))
+            if (m_gameEntities.Any(x => x.EntityId == entity.Entity.EntityId))
             {
                 m_gameEntities.Remove(entity.Entity);
             }
@@ -133,6 +133,7 @@ namespace FosterServer.Core.Manager
         }
 
         #endregion
+
 
     }
 }

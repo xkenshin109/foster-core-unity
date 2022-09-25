@@ -61,7 +61,7 @@ namespace FosterServer.UnityCore.Managers
                 if (children.TryGetComponent<UnityEntity>(out childEntity))
                 {
                     FosterLog.Log($"{a_method} - Game Entity Found {children.name}");
-                    GameMap.AddGameEntity(new EntityModel { Entity = childEntity.Entity});
+                    GameMap.AddGameEntity(new EntityModel { Entity = childEntity.Entity });
                 }
             }
         }

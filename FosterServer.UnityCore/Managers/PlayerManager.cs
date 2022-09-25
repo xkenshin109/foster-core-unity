@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FosterServer.Core.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,20 @@ namespace FosterServer.UnityCore.Managers
         private float X => transform.position.x;
         private float Y => transform.position.y;
         private float Z => transform.position.z;
+
+        private bool m_movementDisabled = false;
+        private Guid m_playerId;
+        public Guid PlayerId
+        {
+            get
+            {
+                if (m_playerId == Guid.Empty)
+                {
+                    m_playerId = Guid.NewGuid();
+                }
+                return m_playerId;
+            }
+        }
         private void Awake()
         {
 
@@ -24,7 +39,7 @@ namespace FosterServer.UnityCore.Managers
 
         private void Start()
         {
-
+            StartListening();
         }
 
         private void Update()
@@ -32,28 +47,51 @@ namespace FosterServer.UnityCore.Managers
 
         }
 
+        private void OnDestroy()
+        {
+            StopListening();
+        }
+
         private void LateUpdate()
         {
-            bool Left = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
-            bool Right = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
-            bool Down = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
-            bool Up = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
-            if (Left)
+            if (!m_movementDisabled)
             {
-                transform.Translate(Vector3.left * Speed * Time.deltaTime);
+                bool Left = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+                bool Right = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+                bool Down = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+                bool Up = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+                if (Left)
+                {
+                    transform.Translate(Vector3.left * Speed * Time.deltaTime);
+                }
+                if (Right)
+                {
+                    transform.Translate(Vector3.right * Speed * Time.deltaTime);
+                }
+                if (Down)
+                {
+                    transform.Translate(Vector3.down * Speed * Time.deltaTime);
+                }
+                if (Up)
+                {
+                    transform.Translate(Vector3.up * Speed * Time.deltaTime);
+                }
             }
-            if (Right)
-            {
-                transform.Translate(Vector3.right * Speed * Time.deltaTime);
-            }
-            if (Down)
-            {
-                transform.Translate(Vector3.down * Speed * Time.deltaTime);
-            }
-            if (Up)
-            {
-                transform.Translate(Vector3.up * Speed * Time.deltaTime);
-            }
+        }
+
+        private void ToggleMovement(object data)
+        {
+            m_movementDisabled = !m_movementDisabled;
+        }
+
+        private void StartListening()
+        {
+            EventsManager.Instance.StartListening(EventManagerEvent.DisableMovement, ToggleMovement, PlayerId);
+        }
+
+        private void StopListening()
+        {
+            EventsManager.Instance.StopListening(EventManagerEvent.DisableMovement, ToggleMovement, PlayerId);
         }
     }
 }

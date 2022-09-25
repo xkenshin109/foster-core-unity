@@ -20,9 +20,9 @@ namespace FosterServer.Core.Models
         private bool m_canEntityPassThrough = false;
         private float m_rotation = 0.0f;
         private Size m_entitySize;
-        private int m_totalMoveCost;
-        private int m_distanceCurrentToStarting;
-        private int m_distanceCurrentToEnding;
+        private float m_totalMoveCost;
+        private float m_distanceCurrentToStarting;
+        private float m_distanceCurrentToEnding;
         private GridPoint m_parentGridPoint;
         #endregion
 
@@ -30,14 +30,33 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Unity Position for Tilemap
         /// </summary>
-        public Vector2Int? UnityPosition { get
+        public Vector2Int? UnityPosition
+        {
+            get
             {
-                if(Position != null)
+                if (Position != null)
                 {
                     return new Vector2Int((int)X, (int)Y);
                 }
                 return null;
-            } }
+            }
+        }
+
+        /// <summary>
+        /// Vector3 Position For Unity
+        /// </summary>
+        public Vector3? Vector3Position
+        {
+            get
+            {
+                if (Position != null)
+                {
+                    return new Vector3((float)X, (float)Y);
+                }
+                return null;
+            }
+        }
+
         /// <summary>
         /// Position of Game Entity
         /// </summary>
@@ -59,7 +78,7 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// X-Coordinate of a Game Entity's Position
         /// </summary>
-        public int? X
+        public float? X
         {
             get
             {
@@ -74,7 +93,7 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Y-Coordinate of a Game Entity's Position
         /// </summary>
-        public int? Y
+        public float? Y
         {
             get
             {
@@ -89,14 +108,15 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Can an Entity Pass Through
         /// </summary>
-        public bool CanEntityPassThrough { 
+        public bool CanEntityPassThrough
+        {
             get
             {
                 return m_canEntityPassThrough;
             }
             set
             {
-                if(m_canEntityPassThrough != value)
+                if (m_canEntityPassThrough != value)
                 {
                     m_canEntityPassThrough = value;
                 }
@@ -106,12 +126,15 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Is Game Entity Interactable
         /// </summary>
-        public bool IsInteractable { get
+        public bool IsInteractable
+        {
+            get
             {
                 return m_isInteractable;
             }
-            set { 
-                if(m_isInteractable != value)
+            set
+            {
+                if (m_isInteractable != value)
                 {
                     m_isInteractable = value;
                 }
@@ -129,7 +152,7 @@ namespace FosterServer.Core.Models
             }
             set
             {
-                if(m_entitySize != value)
+                if (m_entitySize != value)
                 {
                     m_entitySize = value;
                 }
@@ -139,14 +162,15 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Game Entity's Rotation
         /// </summary>
-        public float Rotation { 
-            get 
+        public float Rotation
+        {
+            get
             {
                 return m_rotation;
             }
             set
             {
-                if(m_rotation != value)
+                if (m_rotation != value)
                 {
                     m_rotation = value;
                 }
@@ -156,20 +180,22 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Game Entity's Size Width
         /// </summary>
-        public int EntityWidth { get 
-            { 
-                if(m_entitySize == null)
+        public float EntityWidth
+        {
+            get
+            {
+                if (m_entitySize == null)
                 {
                     return 0;
                 }
-                return m_entitySize.Width; 
-            } 
+                return m_entitySize.Width;
+            }
         }
 
         /// <summary>
         /// Game Entity's Size Height
         /// </summary>
-        public int EntityHeight
+        public float EntityHeight
         {
             get
             {
@@ -184,14 +210,15 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// F - Actual distance from Starting to End Point
         /// </summary>
-        public int F { 
-            get 
-            { 
-                return m_totalMoveCost; 
+        public float F
+        {
+            get
+            {
+                return m_totalMoveCost;
             }
             set
             {
-                if(m_totalMoveCost != value)
+                if (m_totalMoveCost != value)
                 {
                     m_totalMoveCost = value;
                 }
@@ -201,14 +228,15 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// G - Actual distance from Starting to Current Node
         /// </summary>
-        public int G { 
-            get 
-            { 
+        public float G
+        {
+            get
+            {
                 return m_distanceCurrentToStarting;
             }
             set
             {
-                if(m_distanceCurrentToStarting != value)
+                if (m_distanceCurrentToStarting != value)
                 {
                     m_distanceCurrentToStarting = value;
                 }
@@ -218,14 +246,15 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// H - Estimated distance from Current to Ending Nod
         /// </summary>
-        public int H { 
-            get 
-            { 
+        public float H
+        {
+            get
+            {
                 return m_distanceCurrentToEnding;
             }
             set
             {
-                if(m_distanceCurrentToEnding != value)
+                if (m_distanceCurrentToEnding != value)
                 {
                     m_distanceCurrentToEnding = value;
                 }
@@ -243,7 +272,7 @@ namespace FosterServer.Core.Models
             }
             set
             {
-                if(m_parentGridPoint != value)
+                if (m_parentGridPoint != value)
                 {
                     m_parentGridPoint = value;
                 }
@@ -290,25 +319,25 @@ namespace FosterServer.Core.Models
         }
 
         public GridPoint(Point a_point)
-            :this(a_point, false)
+            : this(a_point, false)
         {
         }
 
-        public GridPoint(Point a_point, bool a_isInteractable)
-            :this(a_point, a_isInteractable, false)
+        public GridPoint(Point a_point, bool a_canEntityPassThrough)
+            : this(a_point, a_canEntityPassThrough, false)
         {
 
         }
 
         public GridPoint(Point a_point, bool a_canEntityPassThrough, bool a_isInteractable)
-            : this(a_point, a_canEntityPassThrough, a_isInteractable, new Size(1,1))
+            : this(a_point, a_canEntityPassThrough, a_isInteractable, new Size(1, 1))
         {
 
 
         }
 
         public GridPoint(Point a_point, bool a_canEntityPassThrough, bool a_isInteractable, Size a_entitySize)
-            :this(a_point, a_canEntityPassThrough, a_isInteractable, a_entitySize, 0)
+            : this(a_point, a_canEntityPassThrough, a_isInteractable, a_entitySize, 0)
         {
 
         }
@@ -320,6 +349,36 @@ namespace FosterServer.Core.Models
             IsInteractable = a_isInteractable;
             EntitySize = a_entitySize;
             Rotation = a_rotation;
+        }
+
+        public GridPoint(float a_x, float a_y)
+            : this(new Point(a_x, a_y))
+        {
+
+        }
+
+        public GridPoint(float a_x, float a_y, bool a_canEntityPassThrough)
+            : this(new Point(a_x, a_y), a_canEntityPassThrough)
+        {
+
+        }
+
+        public GridPoint(float a_x, float a_y, bool a_canEntityPassThrough, bool a_isInteractable)
+            : this(new Point(a_x, a_y), a_canEntityPassThrough, a_isInteractable)
+        {
+
+        }
+
+        public GridPoint(float a_x, float a_y, bool a_canEntityPassThrough, bool a_isInteractable, Size a_entitySize)
+            : this(new Point(a_x, a_y), a_canEntityPassThrough, a_isInteractable, a_entitySize)
+        {
+
+        }
+
+        public GridPoint(float a_x, float a_y, bool a_canEntityPassThrough, bool a_isInteractable, Size a_entitySize, float a_rotation)
+            : this(new Point(a_x, a_y), a_canEntityPassThrough, a_isInteractable, a_entitySize, a_rotation)
+        {
+
         }
 
         #endregion
@@ -337,7 +396,7 @@ namespace FosterServer.Core.Models
             var destination = this;
             res.Add(destination);
 
-            while(destination.Parent != null)
+            while (destination.Parent != null)
             {
                 destination = destination.Parent;
                 res.Add(destination);
@@ -347,13 +406,53 @@ namespace FosterServer.Core.Models
 
             return res;
         }
+
+        public List<Vector3> GetVector3GridPoints()
+        {
+            List<Vector3> res = new List<Vector3>();
+            var destination = this;
+            res.Add(new Vector3((float)destination.X, (float)destination.Y, 1));
+
+            while (destination.Parent != null)
+            {
+                destination = destination.Parent;
+                res.Add(new Vector3((float)destination.X, (float)destination.Y, 1));
+            }
+
+            res.Reverse();
+
+            return res;
+        }
+
+        public List<Vector2> GetVector2GridPoints()
+        {
+            List<Vector2> res = new List<Vector2>();
+            var destination = this;
+            res.Add(new Vector2((float)destination.X, (float)destination.Y));
+
+            while (destination.Parent != null)
+            {
+                destination = destination.Parent;
+                res.Add(new Vector2((float)destination.X, (float)destination.Y));
+            }
+
+            res.Reverse();
+
+            return res;
+        }
+
+        public void SetLocation(Vector3 a_position)
+        {
+            Position.SetPosition(a_position);
+        }
+
         #endregion
 
         #region Overloads
 
         public bool EqualsTo(GridPoint a_targetGridPoint)
         {
-            return (this.X == a_targetGridPoint.X) && 
+            return (this.X == a_targetGridPoint.X) &&
                 (this.Y == a_targetGridPoint.Y);
         }
 

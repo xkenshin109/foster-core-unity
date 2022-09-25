@@ -21,21 +21,22 @@ namespace FosterServer.Core.Models
         private bool m_canEntityPassThrough = false;
         private float m_rotation = 0.0f;
         private Size m_entitySize;
-        private List<GridPoint> m_gridPoints = new List<GridPoint>();
-        private Vector3 m_vector3position;
+        private GridPoint m_gridPoint;
+
         #endregion
 
         #region Properties
 
-        public Guid EntityId { 
-            get 
-            { 
-                if(m_entityId == Guid.Empty)
+        public Guid EntityId
+        {
+            get
+            {
+                if (m_entityId == Guid.Empty)
                 {
                     m_entityId = Guid.NewGuid();
                 }
 
-                return m_entityId; 
+                return m_entityId;
             }
         }
 
@@ -114,7 +115,7 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Game Entity's Size Width
         /// </summary>
-        public int EntityWidth
+        public float EntityWidth
         {
             get
             {
@@ -129,7 +130,7 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Game Entity's Size Height
         /// </summary>
-        public int EntityHeight
+        public float EntityHeight
         {
             get
             {
@@ -141,29 +142,29 @@ namespace FosterServer.Core.Models
             }
         }
 
-        /// <summary>
-        /// Points where this entity exists on Grid
-        /// </summary>
-        public List<GridPoint> GridPoints { get { return m_gridPoints; } }
+        ///// <summary>
+        ///// Point where this entity exists on Grid
+        ///// </summary>
+        public GridPoint Point { get { return m_gridPoint; } }
 
         /// <summary>
         /// X Position of Entity
         /// </summary>
-        public float X => m_vector3position.x;
+        public float? X => Point.X;
 
         /// <summary>
         /// Y Position of Entity
         /// </summary>
-        public float Y => m_vector3position.y;
+        public float? Y => Point.Y;
 
         /// <summary>
         /// Position of Game Entity
         /// </summary>
-        public Vector2Int Vector2IntPosition 
-        { 
+        public Vector2Int Vector2IntPosition
+        {
             get
             {
-                return new Vector2Int((int) m_vector3position.x, (int) m_vector3position.y);
+                return new Vector2Int((int)Point.X, (int)Point.Y);
             }
         }
 
@@ -174,7 +175,11 @@ namespace FosterServer.Core.Models
         {
             get
             {
-                return new Vector2(m_vector3position.x, m_vector3position.y);
+                if (Point != null)
+                {
+                    return new Vector2((float)Point.X, (float)Point.Y);
+                }
+                return new Vector2(0, 0);
             }
         }
 
@@ -185,14 +190,11 @@ namespace FosterServer.Core.Models
         {
             get
             {
-                return m_vector3position;
-            }
-            set
-            {
-                if (m_vector3position != value)
+                if (Point != null)
                 {
-                    m_vector3position = value;
+                    return new Vector3((float)Point.X, (float)Point.Y);
                 }
+                return new Vector3(0, 0, 0);
             }
         }
 
@@ -203,7 +205,11 @@ namespace FosterServer.Core.Models
         {
             get
             {
-                return new Vector3Int((int)m_vector3position.x, (int)m_vector3position.y, (int)m_vector3position.z);
+                if (Point != null)
+                {
+                    return new Vector3Int((int)Point.X, (int)Point.Y);
+                }
+                return new Vector3Int(0, 0, 0);
             }
         }
 
@@ -216,25 +222,25 @@ namespace FosterServer.Core.Models
 
         }
 
-        public GameEntity(int a_x, int a_y)
-            :this(a_x, a_y, new Size(1,1))
+        public GameEntity(float a_x, float a_y)
+            : this(a_x, a_y, new Size(1, 1))
         {
 
         }
 
-        public GameEntity(int a_x, int a_y, Size a_entitySize)
+        public GameEntity(float a_x, float a_y, Size a_entitySize)
             : this(a_x, a_y, a_entitySize, 0)
         {
 
         }
 
-        public GameEntity(int a_x, int a_y, Size a_entitySize, float a_rotation)
+        public GameEntity(float a_x, float a_y, Size a_entitySize, float a_rotation)
             : this(a_x, a_y, a_entitySize, a_rotation, false, false)
         {
 
         }
 
-        public GameEntity(int a_x, int a_y, Size a_entitySize, float a_rotation, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
+        public GameEntity(float a_x, float a_y, Size a_entitySize, float a_rotation, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
         {
             Initialize(a_x, a_y, a_entitySize, a_rotation, a_isInteractable, a_canEntityPassThrough);
         }
@@ -242,21 +248,6 @@ namespace FosterServer.Core.Models
         #endregion
 
         #region Private Methods
-
-        private void SetGridPoints()
-        {
-            for (float height = Vector3Position.y; height < Vector3Position.y + EntitySize.Height; height+=1)
-            {
-                for (float width = Vector3Position.x; width < Vector3Position.x + EntitySize.Width; width+=1)
-                {
-                    GridPoint entityPoint = new GridPoint((int)width, (int)height);
-                    if (!GridPoints.Contains(entityPoint))
-                    {
-                        m_gridPoints.Add(entityPoint);
-                    }
-                }
-            }
-        }
 
         #endregion
 
@@ -271,14 +262,13 @@ namespace FosterServer.Core.Models
         /// <param name="a_rotation"></param>
         /// <param name="a_isInteractable"></param>
         /// <param name="a_canEntityPassThrough"></param>
-        public void Initialize(int a_X, int a_Y, Size a_entitySize, float a_rotation = 0, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
+        public void Initialize(float a_X, float a_Y, Size a_entitySize, float a_rotation = 0, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
         {
-            Vector3Position = new Vector3(a_X, a_Y);
             EntitySize = a_entitySize;
             Rotation = a_rotation;
             IsInteractable = a_isInteractable;
             CanEntityPassThrough = a_canEntityPassThrough;
-            SetGridPoints();
+            m_gridPoint = new GridPoint(a_X, a_Y, a_canEntityPassThrough, a_isInteractable, a_entitySize, a_rotation);
         }
 
         /// <summary>
@@ -295,7 +285,7 @@ namespace FosterServer.Core.Models
         /// <param name="a_position"></param>
         public void SetPosition(Vector3 a_position)
         {
-            m_vector3position = a_position;
+            Point.SetLocation(a_position);
         }
 
         /// <summary>
@@ -303,7 +293,7 @@ namespace FosterServer.Core.Models
         /// </summary>
         /// <param name="a_x"></param>
         /// <param name="a_y"></param>
-        public void SetPosition(int a_x, int a_y, int a_z = 1)
+        public void SetPosition(float a_x, float a_y, float a_z = 1)
         {
             SetPosition(new Vector3(a_x, a_y, a_z));
         }
@@ -324,20 +314,12 @@ namespace FosterServer.Core.Models
         /// <returns></returns>
         public bool HasGridPointIntersect(GridPoint a_sourcePoint)
         {
-            bool bHasGridPointIntersect = false;
-            foreach (GridPoint point in GridPoints)
-            {
-                if (point.EqualsTo(a_sourcePoint))
-                {
-                    bHasGridPointIntersect = true;
-                }
-            }
-            return bHasGridPointIntersect;
+            return a_sourcePoint.EqualsTo(Point);
         }
 
         public void Dispose()
         {
-            
+
         }
 
         #endregion

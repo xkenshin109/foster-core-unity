@@ -68,12 +68,13 @@
     <Compile Include="DataModels\Udp.cs" />
     <Compile Include="Enumerations\EnumHelper.cs" />
     <Compile Include="Enumerations\EventManagerEvent.cs" />
-    <Compile Include="Interface\ITileSet.cs" />
     <Compile Include="Logging\FosterLog.cs" />
     <Compile Include="Manager\GameEngine.cs" />
     <Compile Include="Manager\MapManager.cs" />
     <Compile Include="Models\EventManagerModels.cs" />
     <Compile Include="Models\GameEntity.cs" />
+    <Compile Include="Models\Point.cs" />
+    <Compile Include="Models\Size.cs" />
     <Compile Include="Networking\Constants.cs" />
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Networking\Server.cs" />
@@ -101,7 +102,9 @@
   <ItemGroup>
     <None Include="FosterCompileSettings.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interface\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEventDependsOn>
@@ -111,9 +114,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>@echo off
-SET unityProject=G:\Unity Projects\TilesetSupport\Assets\CustomLibrary
 
-echo "%25unityProject%25"
+SET unityProject=G:\Unity Projects\FantasyFighters\Assets\CustomLibrary
+
+IF exist "%25unityProject%25" ( echo "Project Directory: %25unityProject%25 exists") ELSE (mkdir "%25unityProject%25"  &amp;&amp; echo "%25unityProject%25 created")
 
 if "$(ConfigurationName)" == "Release" (
 echo Copying over FosterServer.Core.dll into Unity

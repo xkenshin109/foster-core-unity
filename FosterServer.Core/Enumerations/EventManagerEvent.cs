@@ -17,7 +17,9 @@ namespace FosterServer.Core.Enumerations
         [Display(Name = "Entity Removed")]
         Removed = 2,
         [Display(Name = "Entity Action")]
-        Action = 3
+        Action = 3,
+        [Display(Name = "Disable Movement")]
+        DisableMovement = 4
     }
 
 
