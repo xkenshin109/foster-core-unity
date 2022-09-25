@@ -24,7 +24,6 @@ namespace FosterServer.Core.Models
         private float m_mana = 100f;
         private float m_defense = 20f;
         private float m_attack = 20f;
-        private int m_level = 1;
         private float m_experience = 0f;
         private float m_range = 1f;
         private float m_gold = 0;
@@ -95,7 +94,7 @@ namespace FosterServer.Core.Models
         /// <summary>
         /// Get the Level of the Game Entity
         /// </summary>
-        public float Level { get { return m_level; } }
+        public int Level { get { return LevelExperienceManager.Manager.GetLevel(Experience); } }
 
         /// <summary>
         /// Get the Experience of the Game Entity
