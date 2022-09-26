@@ -66,10 +66,12 @@
   <ItemGroup>
     <Compile Include="DataModels\Tcp.cs" />
     <Compile Include="DataModels\Udp.cs" />
+    <Compile Include="Enumerations\Dices.cs" />
     <Compile Include="Enumerations\EnumHelper.cs" />
     <Compile Include="Enumerations\EventManagerEvent.cs" />
     <Compile Include="Interface\IGameEntityManager.cs" />
     <Compile Include="Logging\FosterLog.cs" />
+    <Compile Include="Manager\DiceManager.cs" />
     <Compile Include="Manager\GameEngine.cs" />
     <Compile Include="Manager\LevelExperienceManager.cs" />
     <Compile Include="Manager\MapManager.cs" />
