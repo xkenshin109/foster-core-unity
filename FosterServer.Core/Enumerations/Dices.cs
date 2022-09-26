@@ -9,6 +9,8 @@ namespace FosterServer.Core.Enumerations
 {
     public enum Dices
     {
+        [Display(Name = "No Dice Roll")]
+        NoDice,
         [Display(Name = "4-Sided Dice")]
         D4 = 4,
         [Display(Name = "6-Sided Dice")]
