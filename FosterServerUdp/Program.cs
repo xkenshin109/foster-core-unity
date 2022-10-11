@@ -22,7 +22,7 @@ namespace FosterServerUdp
                 Console.WriteLine($"{prop} = {a.GetGameProperty(prop.Key)}");
             }
 
-            GameEngine.AddGameProperty("Health", typeof(float), 100);
+            GameEngine.AddGameProperty("Health", typeof(double), 100.0f);
             GameEngine.AddGameProperty("Mana", typeof(float), 100);
             GameEngine.AddGameProperty("Gold", typeof(int), 0);
             GameEngine.AddGameProperty("Strength", typeof(int), 20);
@@ -32,9 +32,9 @@ namespace FosterServerUdp
             GameEngine.AddGameProperty("Wisdom", typeof(int), 10);
             GameEngine.AddGameProperty("Charisma", typeof(int), 10);
             GameEntity a1 = new GameEntity(0, 0);
-            foreach (var prop in a.GameProperties)
+            foreach (var prop in a1.GameProperties)
             {
-                Console.WriteLine($"{prop} = {a1.GetGameProperty(prop.Key)}");
+                Console.WriteLine($"{prop} = {a1.GetGameProperty(prop.Key).GetType().Name}");
             }
         }
 

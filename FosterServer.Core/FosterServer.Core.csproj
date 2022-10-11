@@ -117,7 +117,7 @@
   <PropertyGroup>
     <PostBuildEvent>@echo off
 
-SET unityProject=G:\Unity Projects\FantasyFighters\Assets\CustomLibrary
+SET unityProject=G:\Unity Projects\dungeon_and_dots\Assets\CustomLibrary
 
 IF exist "%25unityProject%25" ( echo "Project Directory: %25unityProject%25 exists") ELSE (mkdir "%25unityProject%25"  &amp;&amp; echo "%25unityProject%25 created")
 

@@ -22,6 +22,7 @@ namespace FosterServer.Core.Models
         private Guid m_entityId;
         private GridPoint m_gridPoint;
         private Dictionary<string, object> m_gameProperties = new Dictionary<string, object>();
+
         #endregion
 
         #region Properties
