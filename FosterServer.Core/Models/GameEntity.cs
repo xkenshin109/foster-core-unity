@@ -1,4 +1,5 @@
 ﻿using FosterServer.Core.Interface;
+using FosterServer.Core.Logging;
 using FosterServer.Core.Manager;
 using System;
 using System.Collections.Generic;
@@ -302,6 +303,51 @@ namespace FosterServer.Core.Models
             if(GameEngine.GetPropertyTypes().TryGetValue(a_propertyName, out type) && GameProperties.ContainsKey(a_propertyName))
             {
                 GameProperties[a_propertyName] = Convert.ChangeType(a_value, type);
+            }
+        }
+
+        /// <summary>
+        /// Change value for Game Entity Property
+        /// </summary>
+        /// <param name="a_propertyName"></param>
+        /// <param name="a_value"></param>
+        public void ChangeValueGameProperty(string a_propertyName, object a_value)
+        {
+            if (!GameProperties.ContainsKey(a_propertyName))
+            {
+                FosterLog.Log("No Property found on Game Entity");
+                return;
+            }
+            object property = GameProperties[a_propertyName];
+
+            Type type = property.GetType();
+            if(type == typeof(int))
+            {
+                GameProperties[a_propertyName] = (int)property + (int)a_value;
+            }
+            else if(type == typeof(long))
+            {
+                GameProperties[a_propertyName] = (long)property + (long)a_value;
+            }
+            else if(type == typeof(short))
+            {
+                GameProperties[a_propertyName] = (short)property + (short)a_value;
+            }
+            else if(type == typeof(float))
+            {
+                GameProperties[a_propertyName] = (float)property + (float)a_value;
+            }
+            else if(type == typeof(double))
+            {
+                GameProperties[a_propertyName] = (double)property + (double)a_value;
+            }
+            else if(type == typeof(decimal))
+            {
+                GameProperties[a_propertyName] = (decimal)property + (decimal)a_value;
+            }
+            else
+            {
+                GameProperties[a_propertyName] = a_value;
             }
         }
 
