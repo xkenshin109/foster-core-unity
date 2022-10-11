@@ -12,6 +12,7 @@ using UnityEngine.Tilemaps;
 
 namespace FosterServer.Core.Models
 {
+    [Serializable]
     [DebuggerDisplay("GameEntity: Id({EntityId}) Position({X},{Y}) Size({EntitySize.Width},{EntitySize.Height}) Passable({CanEntityPassThrough})")]
     public class GameEntity : IDisposable, IGameEntityManager
     {
@@ -19,14 +20,7 @@ namespace FosterServer.Core.Models
 
         private Guid m_entityId;
         private GridPoint m_gridPoint;
-        private float m_health = 100f;
-        private float m_energy = 100f;
-        private float m_mana = 100f;
-        private float m_defense = 20f;
-        private float m_attack = 20f;
-        private float m_experience = 0f;
-        private float m_range = 1f;
-        private float m_gold = 0;
+        private Dictionary<string, object> m_gameProperties = new Dictionary<string, object>();
         #endregion
 
         #region Properties
@@ -67,54 +61,9 @@ namespace FosterServer.Core.Models
         }
 
         /// <summary>
-        /// Get the Health of The Game Entity
+        /// Abstract Dictionary of Game Properties
         /// </summary>
-        public float Health { get { return m_health; } }
-
-        /// <summary>
-        /// Get the Energy of the Game Entity
-        /// </summary>
-        public float Energy { get { return m_energy; } }
-
-        /// <summary>
-        /// Get the Mana of the Game Entity
-        /// </summary>
-        public float Mana { get { return m_mana; } }
-
-        /// <summary>
-        /// Get the Defense of the Game Entity
-        /// </summary>
-        public float Defense { get { return m_defense; } }
-
-        /// <summary>
-        /// Get the Attack of the Game Entity
-        /// </summary>
-        public float Attack { get { return m_attack; } }
-
-        /// <summary>
-        /// Get the Level of the Game Entity
-        /// </summary>
-        public int Level { get { return LevelExperienceManager.Manager.GetLevel(Experience); } }
-
-        /// <summary>
-        /// Get the Experience of the Game Entity
-        /// </summary>
-        public float Experience { get { return m_experience; } }
-
-        /// <summary>
-        /// Get the Attack Range of the Game Entity
-        /// </summary>
-        public float AttackRange { get { return m_range; } }
-
-        /// <summary>
-        /// Is Game Entity Dead
-        /// </summary>
-        public bool IsDead { get { return m_health <= 0; } }
-
-        /// <summary>
-        /// Money the Game Entity possesses
-        /// </summary>
-        public float Gold { get { return m_gold; } }
+        public Dictionary<string, object> GameProperties { get { return m_gameProperties; } }
 
         #region Position and Size Properties
 
@@ -217,6 +166,7 @@ namespace FosterServer.Core.Models
         #region Constructors
 
         public GameEntity()
+            :this(0,0)
         {
 
         }
@@ -232,7 +182,7 @@ namespace FosterServer.Core.Models
         {
 
         }
-
+        
         public GameEntity(float a_x, float a_y, Size a_entitySize, float a_rotation)
             : this(a_x, a_y, a_entitySize, a_rotation, false, false)
         {
@@ -264,27 +214,13 @@ namespace FosterServer.Core.Models
         public void Initialize(float a_X, float a_Y, Size a_entitySize, float a_rotation = 0, bool a_isInteractable = false, bool a_canEntityPassThrough = false)
         {
             m_gridPoint = new GridPoint(a_X, a_Y, a_canEntityPassThrough, a_isInteractable, a_entitySize, a_rotation);
-        }
 
-        /// <summary>
-        /// Initialize Base Stats for Game Entity
-        /// </summary>
-        /// <param name="a_health"></param>
-        /// <param name="a_attack"></param>
-        /// <param name="a_defense"></param>
-        /// <param name="a_attackRange"></param>
-        /// <param name="a_gold"></param>
-        /// <param name="a_mana"></param>
-        /// <param name="a_energy"></param>
-        public void InitializeStats(float a_health = 100, float a_attack = 15, float a_defense = 15, float a_attackRange = 1, float a_gold = 1f, float a_mana = 20, float a_energy = 20)
-        {
-            m_health = a_health;
-            m_attack = a_attack;
-            m_defense = a_defense;
-            m_range = a_attackRange;
-            m_gold = a_gold;
-            m_mana = a_mana;
-            m_energy = a_energy;
+            var properties = GameEngine.GetProperties();
+
+            foreach(var prop in properties.Keys)
+            {
+                AddGameProperty(prop, properties[prop]);
+            }
         }
 
         /// <summary>
@@ -321,7 +257,7 @@ namespace FosterServer.Core.Models
         {
             SetPosition(new Vector3(a_x, a_y, a_z));
         }
-
+        
         /// <summary>
         /// Set Rotation of Entity
         /// </summary>
@@ -342,93 +278,48 @@ namespace FosterServer.Core.Models
         }
 
         /// <summary>
-        /// Sets Health to specified new Health
+        /// Add Game Property for the GameEntity
         /// </summary>
-        /// <param name="a_health"></param>
-        public void SetHealth(float a_health)
+        /// <param name="a_propertyName"></param>
+        /// <param name="a_type"></param>
+        /// <param name="a_defaultValue"></param>
+        public void AddGameProperty(string a_propertyName, object a_defaultValue)
         {
-            m_health = a_health;
-        }
-
-        /// <summary>
-        /// Game Entity took damage. Subtract from Current Health
-        /// </summary>
-        /// <param name="a_damage"></param>
-        public void TakeDamage(float a_damage)
-        {
-            m_health -= a_damage;
-        }
-
-        /// <summary>
-        /// Heal Game Entity
-        /// </summary>
-        /// <param name="a_health"></param>
-        public void Heal(float a_health)
-        {
-            m_health += a_health;
-        }
-
-        /// <summary>
-        /// Change Attack for Game Entity
-        /// </summary>
-        /// <param name="a_attackDamage"></param>
-        public void ChangeAttack(float a_attackDamage)
-        {
-            m_attack += a_attackDamage;
-            if (m_attack < 0)
+            if (!GameProperties.ContainsKey(a_propertyName))
             {
-                m_attack = 0;
+                GameProperties.Add(a_propertyName, a_defaultValue);
             }
         }
 
         /// <summary>
-        /// Change Defense for Game Entity
+        /// Set/Update Game Property for the Game Entity
         /// </summary>
-        /// <param name="a_defense"></param>
-        public void ChangeDefense(float a_defense)
+        /// <param name="a_propertyName"></param>
+        /// <param name="a_value"></param>
+        public void SetGameProperty(string a_propertyName, object a_value)
         {
-            m_defense += a_defense;
-            if(m_defense < 0)
+            Type type;
+            if(GameEngine.GetPropertyTypes().TryGetValue(a_propertyName, out type) && GameProperties.ContainsKey(a_propertyName))
             {
-                m_defense = 0;
+                GameProperties[a_propertyName] = Convert.ChangeType(a_value, type);
             }
         }
 
         /// <summary>
-        /// Change Experience for Game Entity
+        /// Get Game Property Value for the Game Entity
         /// </summary>
-        /// <param name="a_experience"></param>
-        public void ChangeExperience(float a_experience)
+        /// <param name="a_propertyName"></param>
+        /// <returns></returns>
+        public object GetGameProperty(string a_propertyName)
         {
-            m_experience += a_experience;
-        }
-
-        /// <summary>
-        /// Change Attack Range for Game Entity
-        /// </summary>
-        /// <param name="a_range"></param>
-        public void ChangeAttackRange(float a_range)
-        {
-            m_range += a_range;
-            if(m_range <= 0)
+            object a_value = null;
+            if(GameProperties.ContainsKey(a_propertyName))
             {
-                m_range = 1;
+                a_value = GameProperties[a_propertyName];
             }
+            return a_value;
         }
-
-        /// <summary>
-        /// Change Gold for Game Entity
-        /// </summary>
-        /// <param name="a_gold"></param>
-        public void ChangeGold(float a_gold)
-        {
-            m_gold += a_gold;
-            if(m_gold <= 0)
-            {
-                m_gold = 0;
-            }
-        }
-
+        
         public void Dispose()
         {
 

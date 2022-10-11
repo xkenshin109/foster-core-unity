@@ -23,8 +23,13 @@ namespace FosterServer.UnityCore.UserInterface.Menu
         {
         }
 
-        public void StartNewGame()
+        public void PerformAction()
         {
+            if (SceneManager.GetSceneByName(LevelToLoad) == null)
+            {
+                Debug.LogError($"No Scene named {LevelToLoad}. Verify Level is added to project");
+                return;
+            }
             SceneManager.LoadScene(LevelToLoad, LoadSceneMode.Single);
         }
         void OnGUI()
