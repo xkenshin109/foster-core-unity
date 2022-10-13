@@ -72,6 +72,7 @@
     <Compile Include="Interface\IGameEntityManager.cs" />
     <Compile Include="Logging\FosterLog.cs" />
     <Compile Include="Manager\DiceManager.cs" />
+    <Compile Include="Manager\EventManager.cs" />
     <Compile Include="Manager\GameEngine.cs" />
     <Compile Include="Manager\LevelExperienceManager.cs" />
     <Compile Include="Manager\MapManager.cs" />

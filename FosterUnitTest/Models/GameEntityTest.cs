@@ -13,6 +13,24 @@ namespace FosterUnitTest.Models
     [TestClass]
     public class GameEntityTest
     {
+
+        public static GameEntity GameEntityPositioned()
+        {
+            return new GameEntity(5, 5);
+        }
+
+        public static GameEntity GameEntityPositionedSized() {
+            return new GameEntity(5, 5, new Size(1, 1));
+        }
+        public static GameEntity GameEntity()
+        {
+            return new GameEntity();
+        }
+        public static GameEntity GameEntityRotation()
+        {
+            return new GameEntity(5, 5, new Size(1, 1), 80);
+        }
+
         [TestMethod]
         public void GameEntity_no_properties()
         {
@@ -37,7 +55,7 @@ namespace FosterUnitTest.Models
             GameEngine.AddGameProperty(propertyName, typeof(int), 100);
 
             //ACT
-            GameEntity a = new GameEntity();
+            GameEntity a = GameEntityTest.GameEntity();
 
             //ASSERT
             Assert.IsTrue(a.GameProperties.Count() == 1, "Properties Count are not in sync");
@@ -56,7 +74,7 @@ namespace FosterUnitTest.Models
             GameEngine.AddGameProperty(propertyName, typeof(int), 100);
 
             //ACT
-            GameEntity a = new GameEntity();
+            GameEntity a = GameEntityTest.GameEntity();
             a.SetGameProperty(propertyName, 80);
 
             //ASSERT
@@ -73,7 +91,7 @@ namespace FosterUnitTest.Models
             float expectedRotationResult = 80f;
 
             //ACT
-            GameEntity a = new GameEntity(5, 5, new Size(1, 1), 80);
+            GameEntity a = GameEntityTest.GameEntityRotation();
 
             //ASSERT
             Assert.AreEqual(expectedResult, a.Vector3Position, "Position is incorrect");

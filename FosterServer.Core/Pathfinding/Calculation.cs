@@ -62,7 +62,7 @@ namespace FosterServer.Core.Pathfinding
         /// </summary>
         public static void ClearMap()
         {
-            m_entities.Clear();
+            Entities.Clear();
         }
 
         #endregion
@@ -145,7 +145,7 @@ namespace FosterServer.Core.Pathfinding
             var lowestList = a_PointList.Where(x => x.F == lowest.F);
             if (lowestList.Count() > 1)
             {
-                lowest = lowestList.OrderBy(x => x.H).FirstOrDefault();
+                lowest = lowestList.OrderBy(x => x.H).FirstOrDefault(x=>!x.Interesects());
             }
             return lowest;
         }
@@ -222,11 +222,13 @@ namespace FosterServer.Core.Pathfinding
 
         private static bool Interesects(this GridPoint a_point)
         {
-            Bounds b = new Bounds(new Vector3((float)a_point.X, (float)a_point.Y), new Vector3(a_point.EntitySize.Width / 2, a_point.EntitySize.Height / 2));
+            //Bounds b = new Bounds(new Vector3((float)a_point.X, (float)a_point.Y), new Vector3(a_point.EntitySize.Width / 2 , a_point.EntitySize.Height / 2));
+
             bool intersects = Entities.Any(x => {
-                var bound = x;
-                //return b.center.Equals(x.center);
-                return b.Intersects(x);
+                return x.center.Equals(a_point.Vector3Position);
+                //var bound = x;
+                ////return b.center.Equals(x.center);
+                //return b.Intersects(x);
             });
             return intersects;
         }

@@ -16,8 +16,20 @@ namespace FosterServerUdp
     {
         static void Main(string[] args)
         {
+            EventManager m = new EventManager();
+            m.Init();
+            m.StartListening("", testMethod);
+            object tet = new {test = 1 };
+            m.TriggerEvent("", tet);
+        }
+        private static void testMethod(object param)
+        {
+            Console.WriteLine("Testing method");
+        }
+        static void Properties()
+        {
             GameEntity a = new GameEntity(0, 0);
-            foreach(var prop in a.GameProperties)
+            foreach (var prop in a.GameProperties)
             {
                 Console.WriteLine($"{prop} = {a.GetGameProperty(prop.Key)}");
             }
@@ -37,7 +49,6 @@ namespace FosterServerUdp
                 Console.WriteLine($"{prop} = {a1.GetGameProperty(prop.Key).GetType().Name}");
             }
         }
-
         static void RollDice()
         {
             Console.WriteLine("D4 = " + DiceManager.RollDice(Dices.D4));
@@ -47,66 +58,6 @@ namespace FosterServerUdp
             Console.WriteLine("D10P = " + DiceManager.RollDice(Dices.D10P));
             Console.WriteLine("D12 = " + DiceManager.RollDice(Dices.D12));
             Console.WriteLine("D20 = " + DiceManager.RollDice(Dices.D20));
-        }
-        static void PathingTest()
-        {
-            var startingPoint = new GridPoint(-4, -15);
-            var endingPoint = new GridPoint(10, 15);
-            var result = startingPoint.RunPathfindingWorkflow(endingPoint, 2);
-            Console.WriteLine($"Starting Point: [{startingPoint.X},{startingPoint.Y}]");
-            foreach (var point in result)
-            {
-                Console.WriteLine($"Moved to Point: [{point.X}, {point.Y}]");
-            }
-            Console.WriteLine($"Ending Point: [{endingPoint.X},{endingPoint.Y}]");
-            Console.ReadLine();
-        }
-
-        static void PathingTestWithEntities()
-        {
-            var startingPoint = new GridPoint(0, 0);
-            var endingPoint = new GridPoint(5, 5);
-            Calculation.AddEntities(new List<Bounds> {
-                new Bounds(new Vector3(1f,0f),new Vector3(1,1)),
-                new Bounds(new Vector3(0f,1f),new Vector3(1,1)),
-            });
-            var result = startingPoint.RunPathfindingWorkflow(endingPoint, 5);
-            foreach (var point in result)
-            {
-                Console.WriteLine($"Moved to Point: [{point.X}, {point.Y}]");
-            }
-            Console.WriteLine($"Ending Point: [{endingPoint.X},{endingPoint.Y}]");
-            Console.ReadLine();
-        }
-
-        static void PathingTestSteps()
-        {
-            var startingPoint = new GridPoint(0, 0);
-            var endingPoint = new GridPoint(5, 5);
-            var result = startingPoint.RunPathfindingWorkflow(endingPoint, 20, 0.5f);
-            foreach (var point in result)
-            {
-                Console.WriteLine($"Moved to Point: [{point.X}, {point.Y}]");
-            }
-            Console.WriteLine($"Ending Point: [{endingPoint.X},{endingPoint.Y}]");
-            Console.ReadLine();
-        }
-
-        static void PathingTestStepsWithEntities()
-        {
-            var startingPoint = new GridPoint(0, 0);
-            var endingPoint = new GridPoint(5, 5);
-            Calculation.AddEntities(new List<Bounds> {
-                new Bounds(new Vector3(1f,0f),new Vector3(1,1)),
-                new Bounds(new Vector3(0f,1f),new Vector3(1,1)),
-            });
-            var result = startingPoint.RunPathfindingWorkflow(endingPoint, 20, .5f);
-            foreach (var point in result)
-            {
-                Console.WriteLine($"Moved to Point: [{point.X}, {point.Y}]");
-            }
-            Console.WriteLine($"Ending Point: [{endingPoint.X},{endingPoint.Y}]");
-            Console.ReadLine();
         }
     }
 }
