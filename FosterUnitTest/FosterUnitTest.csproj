@@ -71,8 +71,7 @@
     <Compile Include="Models\GameEntityTest.cs" />
     <Compile Include="Models\MapManagerTest.cs" />
     <Compile Include="Pathfinding\PathingCalculationTest.cs" />
-    <Compile Include="ServerTest.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Networking\ServerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
