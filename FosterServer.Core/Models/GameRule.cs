@@ -19,14 +19,14 @@ namespace FosterServer.Core.Models
         public string RuleName { get; set; }
         public ExecutionType ExecutionType { get; set; }
         public Priority Priority { get; set; }
-        public bool RuleStarted { get; set; }
+        public bool RuleStarted
+        { get { if (string.IsNullOrEmpty(RuleName)){ return false; } return RuleManager.Instance.RuleExists(this).IsSuccess; } }
         public GameRule(
-            string a_ruleName, 
             ExecutionType a_executionType = ExecutionType.OnCall, 
             Priority a_priority = Priority.Low)
         {
             Id = GameRule.TOTAL_RULES++;
-            RuleName = a_ruleName;
+            RuleName = this.GetType().Name;
             ExecutionType = a_executionType;
             Priority = a_priority;
             Result result = RuleManager.Instance.AddRule(this);
@@ -40,11 +40,11 @@ namespace FosterServer.Core.Models
                 StartRule();
             }
         }
-        public abstract Result<bool> Execute(object data);
+        public abstract Result<bool> Execute(GameParameters data);
 
-        public abstract Result<bool> Validate(object data);
+        public abstract Result<bool> Validate(GameParameters data);
 
-        public void ExecuteRule(object data)
+        public void ExecuteRule(GameParameters data)
         {
             Result result = Validate(data);
             if (!result.IsSuccess)

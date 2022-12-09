@@ -7,13 +7,13 @@ using UnityEngine.Events;
 
 namespace FosterServer.Core.Models
 {
-    public class EntityModel
+    public class EntityModel : GameParameters
     {
         public GameEntity Entity { get; set; }
     }
 
     [System.Serializable]
-    public class EventManagerParameter : UnityEvent<object>
+    public class EventManagerParameter : UnityEvent<GameParameters>
     {
 
     }

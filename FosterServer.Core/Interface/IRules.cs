@@ -1,5 +1,6 @@
 ﻿using FosterServer.Core.DataModels;
 using FosterServer.Core.Enumerations;
+using FosterServer.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace FosterServer.Core.Interface
         ExecutionType ExecutionType { get; set; }
         Priority Priority { get; set; }
 
-        Result<bool> Validate(object data);
+        Result<bool> Validate(GameParameters data);
 
-        Result<bool> Execute(object data);
+        Result<bool> Execute(GameParameters data);
     }
 }

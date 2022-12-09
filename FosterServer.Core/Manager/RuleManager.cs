@@ -71,7 +71,7 @@ namespace FosterServer.Core.Manager
             {
                 return Result.Error("No Game Rule Found");
             }
-            return Result.Valid();
+            return Result<bool>.Valid(true);
         }
     }
 }

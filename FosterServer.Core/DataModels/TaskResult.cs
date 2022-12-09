@@ -172,7 +172,7 @@ namespace FosterServer.Core.DataModels
         
         public T Value { get; set; }
         
-        public static Result<T> Valid()
+        public static new Result<T> Valid()
         {
 
             return new Result<T> { IsSuccess = true};
@@ -185,10 +185,15 @@ namespace FosterServer.Core.DataModels
             
             return result;
         }
-        public static Result<T> Error(T data, string message = null)
+        public static new Result<T> Error(string message = null)
         {
-            var result = Error(message) as Result<T>;
-            result.Value = data;
+            var result = new Result<T>
+            {
+                IsSuccess = false,
+                Validation = ValidationError.Error,
+                Value = default(T)
+            };
+            result.ErrorMessage.Add(message);
             return result;
         }
     }

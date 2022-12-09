@@ -84,6 +84,7 @@
     <Compile Include="Manager\MapManager.cs" />
     <Compile Include="Models\EventManagerModels.cs" />
     <Compile Include="Models\GameEntity.cs" />
+    <Compile Include="Models\GameParameters.cs" />
     <Compile Include="Models\GameRule.cs" />
     <Compile Include="Models\Point.cs" />
     <Compile Include="Models\Size.cs" />

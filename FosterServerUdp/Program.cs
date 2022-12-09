@@ -19,10 +19,10 @@ namespace FosterServerUdp
             EventManager m = new EventManager();
             m.Init();
             m.StartListening("", testMethod);
-            object tet = new {test = 1 };
-            m.TriggerEvent("", tet);
+            GameParameters para = new GameParameters();
+            m.TriggerEvent("", para);
         }
-        private static void testMethod(object param)
+        private static void testMethod(GameParameters param)
         {
             Console.WriteLine("Testing method");
         }

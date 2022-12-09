@@ -55,13 +55,11 @@ namespace FosterUnitTest.Rules
 
             //ACT
             var totalrules = RuleManager.Instance.Rules.Count;
-            var validateResult = m_validGameRule.Validate(null);
             var executeResult = m_validGameRule.Execute(null);
 
             //ASSERT
             Assert.AreEqual(1, totalrules);
-            Assert.AreEqual(true, validateResult.Value);
-            Assert.AreEqual(true, executeResult.Value);
+            Assert.AreEqual(true, executeResult.IsSuccess);
 
             //CLEANUP
             m_validGameRule.RemoveRule();
@@ -75,31 +73,70 @@ namespace FosterUnitTest.Rules
 
             //ACT
             var totalrules = RuleManager.Instance.Rules.Count;
-            var validateResult = m_invalidGameRule.Validate(null);
             var executeResult = m_invalidGameRule.Execute(null);
 
             //ASSERT
             Assert.AreEqual(1, totalrules);
-            Assert.AreEqual(false, validateResult.Value);
-            Assert.AreEqual(false, executeResult.Value);
+            Assert.AreEqual(false, executeResult.IsSuccess);
 
             //CLEANUP
             m_invalidGameRule.RemoveRule();
         }
+
+        [TestMethod]
+        public void GameRule_execute_rule_valid()
+        {
+            //SETUP
+            var executeRule = new TestRule_ValidRuleExecute();
+
+            //ACT
+            var totalrules = RuleManager.Instance.Rules.Count;
+            var executeResult = executeRule.Execute(new ExecuteParams { Param1 = 1, Param2 = 2 });
+
+            //ASSERT
+            Assert.AreEqual(1, totalrules);
+            Assert.AreEqual(true, executeResult.IsSuccess);
+
+            //CLEANUP
+            executeRule.RemoveRule();
+        }
+
+        [TestMethod]
+        public void GameRule_execute_rule_invalid()
+        {
+            //SETUP
+            var executeRule = new TestRule_ValidRuleExecute();
+
+            //ACT
+            var totalrules = RuleManager.Instance.Rules.Count;
+            var executeResult = executeRule.Execute(new ExecuteParams {Param1 = 3, Param2 = 2 });
+
+            //ASSERT
+            Assert.AreEqual(1, totalrules);
+            Assert.AreEqual(false, executeResult.IsSuccess);
+
+            //CLEANUP
+            executeRule.RemoveRule();
+        }
     }
     public class TestRule_Valid : GameRule
     {
-        public TestRule_Valid(string a_ruleName = "TestRule_Valid", ExecutionType a_type = ExecutionType.OnCall, Priority a_priority = Priority.Low)
-            :base(a_ruleName, a_type, a_priority)
+        public TestRule_Valid(ExecutionType a_type = ExecutionType.OnCall, Priority a_priority = Priority.Low)
+            :base(a_type, a_priority)
         {
 
         }
-        public override Result<bool> Execute(object data)
+        public override Result<bool> Execute(GameParameters data)
         {
+            var result = Validate(data);
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
             return Result<bool>.Valid(true);
         }
 
-        public override Result<bool> Validate(object data)
+        public override Result<bool> Validate(GameParameters data)
         {
             return Result<bool>.Valid(true);
         }
@@ -107,19 +144,60 @@ namespace FosterUnitTest.Rules
 
     public class TestRule_Invalid : GameRule
     {
-        public TestRule_Invalid(string a_ruleName = "TestRule_Invalid", ExecutionType a_type = ExecutionType.OnCall, Priority a_priority = Priority.Low)
-            : base(a_ruleName, a_type, a_priority)
+        public TestRule_Invalid(ExecutionType a_type = ExecutionType.OnCall, Priority a_priority = Priority.Low)
+            : base(a_type, a_priority)
         {
 
         }
-        public override Result<bool> Execute(object data)
+        public override Result<bool> Execute(GameParameters data)
         {
-            return Result<bool>.Valid(false);
+            var result = Validate(data);
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
+            return Result<bool>.Valid(true);
         }
 
-        public override Result<bool> Validate(object data)
+        public override Result<bool> Validate(GameParameters data)
         {
-            return Result<bool>.Valid(false);
+            return Result<bool>.Error("Validation Error");
         }
+    }
+
+    public class TestRule_ValidRuleExecute : GameRule
+    {
+
+        public TestRule_ValidRuleExecute(ExecutionType a_type = ExecutionType.OnCall, Priority a_priority = Priority.Low)
+            : base(a_type, a_priority)
+        {
+
+        }
+        public override Result<bool> Execute(GameParameters data)
+        {
+            var result = Validate(data);
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
+
+            return Result<bool>.Valid(true);
+        }
+        public override Result<bool> Validate(GameParameters data)
+        {
+            var a_params = data as ExecuteParams;
+            if(a_params.Param1 > a_params.Param2)
+            {
+                return Result<bool>.Error("Validation Error: Param1 is greated than Param2");
+            }
+            return Result<bool>.Valid(true);
+        }
+
+    }
+    public class ExecuteParams : GameParameters
+    {
+        public int Param1 { get; set; }
+        public int Param2 { get; set; }
+
     }
 }

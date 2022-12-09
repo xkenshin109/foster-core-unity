@@ -52,7 +52,7 @@ namespace FosterServer.Core.Manager
         /// </summary>
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
-        public void StartListening(string a_EventName, UnityAction<object> listener)
+        public void StartListening(string a_EventName, UnityAction<GameParameters> listener)
         {
             EventManagerParameter uEvent = null;
             if (m_Events.TryGetValue(a_EventName, out uEvent))
@@ -72,7 +72,7 @@ namespace FosterServer.Core.Manager
         /// </summary>
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
-        public void StartListening(EventManagerEvent a_EventName, UnityAction<object> listener)
+        public void StartListening(EventManagerEvent a_EventName, UnityAction<GameParameters> listener)
         {
             StartListening(a_EventName.Name(), listener);
         }
@@ -84,7 +84,7 @@ namespace FosterServer.Core.Manager
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
         /// <param name="listenerId"></param>
-        public void StartListening(EventManagerEvent a_EventName, UnityAction<object> listener, Guid listenerId)
+        public void StartListening(EventManagerEvent a_EventName, UnityAction<GameParameters> listener, Guid listenerId)
         {
             StartListening(a_EventName.Name(), listener, listenerId);
         }
@@ -96,7 +96,7 @@ namespace FosterServer.Core.Manager
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
         /// <param name="listenerId"></param>
-        public void StartListening(string a_EventName, UnityAction<object> listener, Guid listenerId)
+        public void StartListening(string a_EventName, UnityAction<GameParameters> listener, Guid listenerId)
         {
             FosterLog.Log($"EntityId - {listenerId} STARTED listening on {a_EventName}");
             StartListening(a_EventName, listener);
@@ -107,7 +107,7 @@ namespace FosterServer.Core.Manager
         /// </summary>
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
-        public void StopListening(string a_EventName, UnityAction<object> listener)
+        public void StopListening(string a_EventName, UnityAction<GameParameters> listener)
         {
             EventManagerParameter uEvent = null;
 
@@ -122,7 +122,7 @@ namespace FosterServer.Core.Manager
         /// </summary>
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
-        public void StopListening(EventManagerEvent a_EventName, UnityAction<object> listener)
+        public void StopListening(EventManagerEvent a_EventName, UnityAction<GameParameters> listener)
         {
             StopListening(a_EventName.Name(), listener);
         }
@@ -133,7 +133,7 @@ namespace FosterServer.Core.Manager
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
         /// <param name="listenerId"></param>
-        public void StopListening(EventManagerEvent a_EventName, UnityAction<object> listener, Guid listenerId)
+        public void StopListening(EventManagerEvent a_EventName, UnityAction<GameParameters> listener, Guid listenerId)
         {
             StopListening(a_EventName.Name(), listener, listenerId);
         }
@@ -144,7 +144,7 @@ namespace FosterServer.Core.Manager
         /// <param name="a_EventName"></param>
         /// <param name="listener"></param>
         /// <param name="listenerId"></param>
-        public void StopListening(string a_EventName, UnityAction<object> listener, Guid listenerId)
+        public void StopListening(string a_EventName, UnityAction<GameParameters> listener, Guid listenerId)
         {
             FosterLog.Log($"EntityId - {listenerId} STOPPED listening on {a_EventName}");
             StopListening(a_EventName, listener);
@@ -155,7 +155,7 @@ namespace FosterServer.Core.Manager
         /// </summary>
         /// <param name="a_EventName"></param>
         /// <param name="data"></param>
-        public void TriggerEvent(string a_EventName, object data)
+        public void TriggerEvent(string a_EventName, GameParameters data)
         {
             EventManagerParameter uEvent = null;
 
@@ -170,7 +170,7 @@ namespace FosterServer.Core.Manager
         /// </summary>
         /// <param name="a_EventName"></param>
         /// <param name="data"></param>
-        public void TriggerEvent(EventManagerEvent a_EventName, object a_Data)
+        public void TriggerEvent(EventManagerEvent a_EventName, GameParameters a_Data)
         {
             TriggerEvent(a_EventName.Name(), a_Data);
         }
@@ -181,7 +181,7 @@ namespace FosterServer.Core.Manager
         /// <param name="a_EventName"></param>
         /// <param name="a_Data"></param>
         /// <param name="a_ListenerId"></param>
-        public void TriggerEvent(EventManagerEvent a_EventName, object a_Data, Guid a_ListenerId)
+        public void TriggerEvent(EventManagerEvent a_EventName, GameParameters a_Data, Guid a_ListenerId)
         {
             TriggerEvent(a_EventName.Name(), a_Data, a_ListenerId);
         }
@@ -192,7 +192,7 @@ namespace FosterServer.Core.Manager
         /// <param name="a_EventName"></param>
         /// <param name="a_Data"></param>
         /// <param name="a_ListenerId"></param>
-        public void TriggerEvent(string a_EventName, object a_Data, Guid a_ListenerId)
+        public void TriggerEvent(string a_EventName, GameParameters a_Data, Guid a_ListenerId)
         {
             FosterLog.Log($"EntityId - {a_ListenerId} TRIGGERED listening on {a_EventName}");
             TriggerEvent(a_EventName, a_Data);
