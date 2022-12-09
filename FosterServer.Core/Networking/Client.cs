@@ -28,13 +28,14 @@ namespace FosterServer.Core.Networking
                 PacketHandler<ServerPackets>.AddPacketHandleEvent(ServerPackets.login, LoginListen);
             }
         }
-        public void LoginListen(int a_fromClient, Packet a_packet)
+        public Result LoginListen(int a_fromClient, Packet a_packet)
         {
             if(id == 0)
             {
                 id = a_packet.Id;
             }            
             Console.WriteLine($"Login Response from Server. Assigned Client {id}");
+            return Result.Valid();
         }
         public void Disconnect()
         {

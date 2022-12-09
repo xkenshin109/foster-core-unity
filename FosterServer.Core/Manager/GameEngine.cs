@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FosterServer.Core.DataModels;
+using FosterServer.Core.Enumerations;
+using FosterServer.Core.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +12,9 @@ namespace FosterServer.Core.Manager
 {
     public class GameEngine
     {
+        #region Private Members
         private static List<Tuple<string, Type, object>> m_gameProperties = new List<Tuple<string, Type, object>>();
+        #endregion
 
         /// <summary>
         /// Add Game Property for Game Entities
@@ -51,5 +56,6 @@ namespace FosterServer.Core.Manager
         {
             m_gameProperties.Clear();
         }
+
     }
 }

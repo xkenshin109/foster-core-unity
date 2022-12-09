@@ -40,7 +40,7 @@ namespace FosterServer.Core.Networking
             m_tcpListener = new TcpListener(IPAddress.Any, Port);
             m_tcpListener.ExclusiveAddressUse = false;
             m_tcpListener.Start();
-            m_tcpListener.BeginAcceptTcpClient(TCPConnectCallback, m_tcpListener.Server);
+            //m_tcpListener.BeginAcceptTcpClient(TCPConnectCallback, m_tcpListener.Server);
             m_tcpListener.Server.NoDelay = true;
             m_tcpListener.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendBuffer, true);
             m_tcpListener.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, true);
@@ -94,38 +94,38 @@ namespace FosterServer.Core.Networking
             m_udpListener.Close();
             m_initialized = false;
         }
-        private static void TCPConnectCallback(IAsyncResult a_result)
-        {
-            try
-            {
-                if (!m_initialized) return;
-                TcpClient tcpClient = m_tcpListener.EndAcceptTcpClient(a_result);
-                m_tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
-                Console.WriteLine($"Incoming connection from {tcpClient.Client.RemoteEndPoint}...");
+        //private static Task<bool> TCPConnectCallback(IAsyncResult a_result)
+        //{
+        //    //try
+        //    //{
+        //    //    if (!m_initialized) return Task.false;
+        //    //    TcpClient tcpClient = m_tcpListener.EndAcceptTcpClient(a_result);
+        //    //    m_tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
+        //    //    Console.WriteLine($"Incoming connection from {tcpClient.Client.RemoteEndPoint}...");
 
-                for (int i = 1; i <= MaxPlayers; i++)
-                {
-                    if (m_clients[i].tcp.socket == null)
-                    {
-                        m_clients[i].tcp.Connect(tcpClient, false);
-                        var loginPacket = new Packet(i, ServerPackets.login);
-                        var test = new Packet(loginPacket.ToArray());
-                        SendTcpData(tcpClient, loginPacket);
-                        return;
-                    }
-                    else
-                    {
-                        //Process and handle packet
-                    }
-                }
+        //    //    for (int i = 1; i <= MaxPlayers; i++)
+        //    //    {
+        //    //        if (m_clients[i].tcp.socket == null)
+        //    //        {
+        //    //            m_clients[i].tcp.Connect(tcpClient, false);
+        //    //            var loginPacket = new Packet(i, ServerPackets.login);
+        //    //            var test = new Packet(loginPacket.ToArray());
+        //    //            SendTcpData(tcpClient, loginPacket);
+        //    //            return;
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            //Process and handle packet
+        //    //        }
+        //    //    }
 
-                Console.WriteLine($"{tcpClient.Client.RemoteEndPoint} failed to connect: Server Full!");
-            }catch(Exception ie)
-            {
-                Console.WriteLine($"Connection closed:{ie.Message}");
-            }
+        //    //    Console.WriteLine($"{tcpClient.Client.RemoteEndPoint} failed to connect: Server Full!");
+        //    //}catch(Exception ie)
+        //    //{
+        //    //    Console.WriteLine($"Connection closed:{ie.Message}");
+        //    //}
 
-        }
+        //}
 
         private static void UDPReceiveCallback(IAsyncResult a_result)
         {

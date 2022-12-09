@@ -82,6 +82,12 @@ namespace FosterServer.Core.DataModels
             
             WriteHeader();
         }
+
+        /// <summary>
+        /// Creates a new packet with a given ID. Used when receiving from Server
+        /// </summary>
+        /// <param name="a_id"></param>
+        /// <param name="a_clientPacket"></param>
         public Packet(int a_id, ClientPackets a_clientPacket = ClientPackets.none)
         {
             Id = a_id;
@@ -115,13 +121,13 @@ namespace FosterServer.Core.DataModels
             Write(_data);
             readableBuffer = buffer.ToArray();
         }
-
+        
         /// <summary>Inserts the length of the packet's content at the start of the buffer.</summary>
-        public void WriteLength()
+        public Result WriteLength()
         {
             if(headerBytes != 0)
             {
-                return; 
+                return Result.Invalid("Header Already Constructed"); 
                 //Header already constructed
             }
             int _totalMessageBytes = BitConverter.GetBytes(buffer.Count).Length;
@@ -141,18 +147,28 @@ namespace FosterServer.Core.DataModels
             WriteFirst(_totalMessageBytes);//Header Packet size            
 
             headerBytes = _totalHeaderBytes;
+
+            return Result.Valid();
         }
 
-        public void WriteHeader()
+        public Result WriteHeader()
         {
-            WriteLength();
+            return WriteLength();
         }
 
         /// <summary>Inserts the given int at the start of the buffer.</summary>
         /// <param name="_value">The int to insert.</param>
-        public void InsertInt(int _value)
+        public Result InsertInt(int _value)
         {
-            buffer.InsertRange(0, BitConverter.GetBytes(_value)); // Insert the int at the start of the buffer
+            try
+            {
+                buffer.InsertRange(0, BitConverter.GetBytes(_value)); // Insert the int at the start of the buffer
+                return Result.Valid();
+            }
+            catch(Exception ie)
+            {
+                return Result.Error(ie.Message);
+            }
         }
 
         /// <summary>Gets the packet's content in array form.</summary>
@@ -176,7 +192,7 @@ namespace FosterServer.Core.DataModels
 
         /// <summary>Resets the packet instance to allow it to be reused.</summary>
         /// <param name="_shouldReset">Whether or not to reset the packet.</param>
-        public void Reset(bool _shouldReset = true)
+        public Result Reset(bool _shouldReset = true)
         {
             if (_shouldReset)
             {
@@ -188,6 +204,7 @@ namespace FosterServer.Core.DataModels
             {
                 readPos -= 4; // "Unread" the last read int
             }
+            return Result.Valid();
         }
         #endregion
 
@@ -547,7 +564,7 @@ namespace FosterServer.Core.DataModels
     {
         public bool IsServer => typeof(T) == typeof(ClientPackets);
         public bool IsClient => typeof(T) == typeof(ServerPackets);
-        public delegate void PacketHandlerEvent(int _fromClient, Packet _packet);
+        public delegate Result PacketHandlerEvent(int _fromClient, Packet _packet);
         private static Dictionary<int, List<PacketHandlerEvent>> m_packetHandler = new Dictionary<int, List<PacketHandlerEvent>>();
         public static Dictionary<int, List<PacketHandlerEvent>> PacketHandlerDict
         {

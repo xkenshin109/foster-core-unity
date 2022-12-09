@@ -1,6 +1,10 @@
-﻿using FosterServer.Core.Enumerations;
+﻿using FosterServer.Core.DataModels;
+using FosterServer.Core.Enumerations;
+using FosterServer.Core.Interface;
 using FosterServer.Core.Logging;
 using FosterServer.Core.Manager;
+using FosterServer.Core.Models;
+using FosterServer.UnityCore.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +14,34 @@ using UnityEngine;
 
 namespace FosterServer.UnityCore.UserInterface.Command
 {
-    public abstract class AbilityCommand : MonoBehaviour
+    public abstract class AbilityCommand : MonoBehaviour, ICommandAction
     {
-        public string AbilityName;
-        private bool requiresDiceRole => DiceToUse != Dices.NoDice;
-        public Dices DiceToUse = Dices.NoDice;
+        private GameRule m_rule;
+        public GameRule Rule
+        {
+            get
+            {
+                if (m_rule == null)
+                {
+                    FosterLog.Error("Game Rule has not been assigned");
+                    return null;
+                }
+                return m_rule;
+            }
+            set
+            {
+                if (m_rule == null)
+                {
+                    m_rule = value;
+                }
+            }
+        }
 
         public void Awake()
         {
-        }
-        public void Run()
-        {
-            if (requiresDiceRole)
-            {
-                var result = DiceManager.RollDice(DiceToUse);
-                PerformAction(result);
-            }
-            else
-            {
-                PerformAction();
-            }
-        }
 
-        public abstract void PerformAction();
+        }
+        public abstract void Execute();
 
-        public abstract void PerformAction(float a_dcCheck);
     }
 }

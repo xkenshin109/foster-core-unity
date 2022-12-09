@@ -10,7 +10,7 @@ namespace FosterServer.Core.Utilities
 {
     public class ServerHandle
     {
-        public static void WelcomeReceived(int a_fromClient, Packet a_packet)
+        public static Result WelcomeReceived(int a_fromClient, Packet a_packet)
         {
             int _clientIdCheck = a_packet.ReadInt();
             string _username = a_packet.ReadString();
@@ -19,24 +19,27 @@ namespace FosterServer.Core.Utilities
             {
                 Console.WriteLine($"Player \"{_username}\" (ID: {a_fromClient} has assumed the wrong client ID({_clientIdCheck})!");
             }
+            return Result.Valid();
         }
 
-        public static void UDPTestReceived(int a_fromClient, Packet a_packet)
+        public static Result UDPTestReceived(int a_fromClient, Packet a_packet)
         {
             string _msg = a_packet.ReadString();
 
             Console.WriteLine($"Received packet via UDP, Contains message: {_msg}");
+            return Result.Valid();
         }
 
-        public static void LoginRequested(int a_fromClient, Packet a_packet)
+        public static Result LoginRequested(int a_fromClient, Packet a_packet)
         {
             //string _username = a_packet.ReadString();
             //string _password = a_packet.ReadString();
 
             Console.WriteLine($"Received packet LoginRequest, User connecting: {a_fromClient}");
+            return Result.Valid();
         }
 
-        public static void DisconnectUser(int a_fromClient, Packet a_packet)
+        public static Result DisconnectUser(int a_fromClient, Packet a_packet)
         {
             if (Server.m_clients.ContainsKey(a_fromClient))
             {
@@ -53,12 +56,15 @@ namespace FosterServer.Core.Utilities
                         Server.m_clients[a_fromClient].tcp.socket.Close();
                     }
                     Console.WriteLine($"Player has disconnected from server");
+                    return Result.Valid();
                 }
                 catch(Exception ie)
                 {
                     Console.WriteLine($"ServerHandle.DisconnectUser() - Error in disconnecting {ie.Message}");
+                    return Result.Error($"ServerHandle.DisconnectUser() - Error in disconnecting {ie.Message}");
                 }
             }
+            return Result.Valid();
             
         }
     }

@@ -15,11 +15,23 @@ namespace FosterServer.Core.Manager
         #region Private Members
 
         private Dictionary<string, EventManagerParameter> m_Events;
+        private static EventManager m_EventsManager;
 
         #endregion
 
         #region Properties
-
+        public static EventManager Instance 
+        { 
+            get 
+            { 
+                if(m_EventsManager == null)
+                {
+                    m_EventsManager = new EventManager();
+                    m_EventsManager.Init();
+                }
+                return m_EventsManager;
+            } 
+        }
         #endregion
 
         #region Private Methods

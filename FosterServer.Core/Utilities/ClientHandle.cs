@@ -10,7 +10,7 @@ namespace FosterServer.Core.Utilities
 {
     public class ClientHandle
     {
-        public static void ServerWelcome(int a_fromClient, Packet a_packet)
+        public static Result ServerWelcome(int a_fromClient, Packet a_packet)
         {
             
             string _username = a_packet.ReadString();
@@ -19,20 +19,25 @@ namespace FosterServer.Core.Utilities
             {
                 Console.WriteLine($"Player \"{_username}\" (ID: {a_fromClient} has assumed the wrong client ID({a_packet.Id})!");
             }
+            return Result.Valid();
         }
-        public static void ServerLoginResponse(int a_fromClient, Packet a_packet)
+        public static Result ServerLoginResponse(int a_fromClient, Packet a_packet)
         {
-            
+            return Result.Valid();
         }
-        public static void DisconnectFromServer(int a_fromClient, Packet a_packet)
+        public static Result DisconnectFromServer(int a_fromClient, Packet a_packet)
         {
             try
             {
                 Console.WriteLine($"Disconnected from server successful");
-            }catch(Exception ie)
+                return Result.Valid();
+            }
+            catch(Exception ie)
             {
                 Console.WriteLine("ClientHandle.DisconnectFromServer() - " + ie?.Message);
+                return Result.Error("ClientHandle.DisconnectFromServer() - " + ie?.Message);
             }
+            
         }
     }
 }

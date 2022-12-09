@@ -1,4 +1,6 @@
 ﻿using FosterServer.Core.Enumerations;
+using FosterServer.Core.Models;
+using FosterServer.UnityCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace FosterServer.UnityCore.Managers
     /// Player Controller
     /// </summary>
     [RequireComponent(typeof(Camera))]
+    [RequireComponent(typeof(UnityEntity))]
     public class PlayerManager : MonoBehaviour
     {
         public float Speed = .1f;
@@ -21,6 +24,20 @@ namespace FosterServer.UnityCore.Managers
 
         private bool m_movementDisabled = false;
         private Guid m_playerId;
+        
+        public GameEntity gameEntity
+        {
+            get
+            {
+                UnityEntity entity;
+                if (TryGetComponent<UnityEntity>(out entity))
+                {
+                    return entity.Entity;
+                }
+                return null;
+            }
+        } 
+
         public Guid PlayerId
         {
             get
@@ -92,6 +109,16 @@ namespace FosterServer.UnityCore.Managers
         private void StopListening()
         {
             EventsManager.Instance.StopListening(EventManagerEvent.DisableMovement, ToggleMovement, PlayerId);
+        }
+
+        public static GameEntity MainPlayer()
+        {
+            PlayerManager mainPlayer = GameObject.FindObjectOfType<PlayerManager>();
+            if (mainPlayer != null)
+            {
+                return mainPlayer.gameEntity;
+            }
+            return null;
         }
     }
 }

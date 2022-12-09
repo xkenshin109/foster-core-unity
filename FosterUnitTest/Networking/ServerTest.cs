@@ -1,6 +1,7 @@
 ﻿using FosterServer.Core.DataModels;
 using FosterServer.Core.Networking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,13 @@ namespace FosterUnitTest.Networking
     [TestClass]
     public class ServerTest
     {
+        Mock<PacketHandler<ClientPackets>> m_packetHandler;
+        Mock<Client> m_client;
+        public ServerTest()
+        {
+            m_packetHandler = new Mock<PacketHandler<ClientPackets>>();
+            m_client = new Mock<Client>();
+        }
         #region Tests
         [TestMethod("Server Initialized and started")]
         public void Initialize()
@@ -63,6 +71,7 @@ namespace FosterUnitTest.Networking
                 Console.WriteLine(packet.Id);
                 totalConnected = Server.m_clients.Sum(x => x.Value.IsConnected ? 1 : 0);
                 waiting = false;
+                return Result.Valid();
             });
 
             Client client = CreateUdpClient(1);
@@ -81,8 +90,9 @@ namespace FosterUnitTest.Networking
             bool waiting = true;
             int totalConnected = 0;
             int expectedConnected = 2;
-
+            
             Client client = CreateUdpClient(1);
+
             Client client2 = CreateUdpClient(2);
 
             //Start the Server
@@ -95,6 +105,7 @@ namespace FosterUnitTest.Networking
                 {
                     waiting = false;
                 }
+                return Result.Valid();
             });
 
             client.udp.SendData(new Packet(client.id, ClientPackets.loginReceived));

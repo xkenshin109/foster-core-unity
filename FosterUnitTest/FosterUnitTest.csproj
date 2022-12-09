@@ -70,9 +70,13 @@
     <Compile Include="Manager\EventManagerTests.cs" />
     <Compile Include="Models\GameEntityTest.cs" />
     <Compile Include="Models\MapManagerTest.cs" />
+    <Compile Include="Models\ResultModelTest.cs" />
+    <Compile Include="Networking\PacketHandlerTest.cs" />
+    <Compile Include="Networking\PacketTest.cs" />
     <Compile Include="Pathfinding\PathingCalculationTest.cs" />
     <Compile Include="Networking\ServerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\GameRuleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -2,6 +2,7 @@
 using FosterServer.Core.Pathfinding;
 using FosterServer.Core.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace FosterUnitTest.Pathfinding
 
             //ACT
             var result = startingPoint.RunPathfindingWorkflow(endingPoint, expectedSteps);
-            
+
             //ASSERT
             Assert.AreEqual(expectedSteps, result.Count() - 1);
             Assert.IsTrue(ValidateList(expectedPath, result));

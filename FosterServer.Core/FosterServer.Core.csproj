@@ -64,12 +64,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModels\TaskResult.cs" />
     <Compile Include="DataModels\Tcp.cs" />
     <Compile Include="DataModels\Udp.cs" />
     <Compile Include="Enumerations\Dices.cs" />
     <Compile Include="Enumerations\EnumHelper.cs" />
     <Compile Include="Enumerations\EventManagerEvent.cs" />
+    <Compile Include="Enumerations\ExecutionType.cs" />
+    <Compile Include="Enumerations\Priority.cs" />
+    <Compile Include="Interface\ICommandAction.cs" />
     <Compile Include="Interface\IGameEntityManager.cs" />
+    <Compile Include="Manager\RuleManager.cs" />
+    <Compile Include="Interface\IRules.cs" />
     <Compile Include="Logging\FosterLog.cs" />
     <Compile Include="Manager\DiceManager.cs" />
     <Compile Include="Manager\EventManager.cs" />
@@ -78,6 +84,7 @@
     <Compile Include="Manager\MapManager.cs" />
     <Compile Include="Models\EventManagerModels.cs" />
     <Compile Include="Models\GameEntity.cs" />
+    <Compile Include="Models\GameRule.cs" />
     <Compile Include="Models\Point.cs" />
     <Compile Include="Models\Size.cs" />
     <Compile Include="Networking\Constants.cs" />
