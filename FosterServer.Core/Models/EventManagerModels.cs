@@ -9,7 +9,6 @@ namespace FosterServer.Core.Models
 {
     public class EntityModel : GameParameters
     {
-        public GameEntity Entity { get; set; }
     }
 
     [System.Serializable]

@@ -55,7 +55,7 @@ namespace FosterUnitTest.Rules
 
             //ACT
             var totalrules = RuleManager.Instance.Rules.Count;
-            var executeResult = m_validGameRule.Execute(null);
+            var executeResult = m_validGameRule.ExecuteRule(null);
 
             //ASSERT
             Assert.AreEqual(1, totalrules);
@@ -73,7 +73,7 @@ namespace FosterUnitTest.Rules
 
             //ACT
             var totalrules = RuleManager.Instance.Rules.Count;
-            var executeResult = m_invalidGameRule.Execute(null);
+            var executeResult = m_invalidGameRule.ExecuteRule(null);
 
             //ASSERT
             Assert.AreEqual(1, totalrules);
@@ -109,7 +109,8 @@ namespace FosterUnitTest.Rules
 
             //ACT
             var totalrules = RuleManager.Instance.Rules.Count;
-            var executeResult = executeRule.Execute(new ExecuteParams {Param1 = 3, Param2 = 2 });
+            var param = new ExecuteParams { Param1 = 3, Param2 = 2 };
+            var executeResult = executeRule.ExecuteRule(param);
 
             //ASSERT
             Assert.AreEqual(1, totalrules);
@@ -161,7 +162,7 @@ namespace FosterUnitTest.Rules
 
         public override Result<bool> Validate(GameParameters data)
         {
-            return Result<bool>.Error("Validation Error");
+            return Result<bool>.Error("Error");
         }
     }
 

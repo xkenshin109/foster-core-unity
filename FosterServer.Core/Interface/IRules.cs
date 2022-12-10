@@ -15,9 +15,6 @@ namespace FosterServer.Core.Interface
         int Id { get; set; }
         ExecutionType ExecutionType { get; set; }
         Priority Priority { get; set; }
-
-        Result<bool> Validate(GameParameters data);
-
-        Result<bool> Execute(GameParameters data);
+        Result<bool> ExecuteRule(GameParameters data);
     }
 }

@@ -35,22 +35,34 @@ namespace FosterServer.Core.Models
                 GameRule.TOTAL_RULES--;
                 FosterLog.Error(result.Message);
             }
-            else
-            {
-                StartRule();
-            }
         }
+        
+        /// <summary>
+        /// Execute Logic for Game Rule
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public abstract Result<bool> Execute(GameParameters data);
 
+        /// <summary>
+        /// Validation Method for Game Rule
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public abstract Result<bool> Validate(GameParameters data);
 
-        public void ExecuteRule(GameParameters data)
+        /// <summary>
+        /// Validate and Execute Rule: Returns Result on success/failure
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Result<bool> ExecuteRule(GameParameters data)
         {
-            Result result = Validate(data);
+            Result<bool> result = Validate(data);
             if (!result.IsSuccess)
             {
                 FosterLog.Error(result.Message);
-                return;
+                return result;
             }
 
             result = Execute(data);
@@ -59,25 +71,13 @@ namespace FosterServer.Core.Models
             {
                 FosterLog.Error(result.Message);
             }
-        }
 
-        public void StartRule()
-        {
-            EventManager.Instance.StartListening("GameEngineRule_"+RuleName, ExecuteRule);
-        }
-
-        public void StopRule()
-        {
-            EventManager.Instance.StopListening("GameEngineRule_" + RuleName, ExecuteRule);
+            return result;
         }
 
         public Result RemoveRule()
         {
             var result = RuleManager.Instance.RemoveRule(this);
-            if (result.IsSuccess)
-            {
-                StopRule();
-            }
             return result;
         }
     }
