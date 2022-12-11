@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-namespace FosterServer.UnityCore.UserInterface.Menu
+namespace FosterServer.UnityCore.UserInterface
 {
     [RequireComponent(typeof(Button))]
     public class LoadLevel : MonoBehaviour

@@ -66,8 +66,8 @@
     <Compile Include="Managers\UnityMapManager.cs" />
     <Compile Include="Models\UnityEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserInterface\Command\AbilityCommand.cs" />
-    <Compile Include="UserInterface\Menu\LoadLevel.cs" />
+    <Compile Include="Models\AbilityCommand.cs" />
+    <Compile Include="UserInterface\LoadLevel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

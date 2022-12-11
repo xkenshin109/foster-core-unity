@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace FosterServer.UnityCore.UserInterface.Command
+namespace FosterServer.UnityCore.Models
 {
     public abstract class AbilityCommand : MonoBehaviour, ICommandAction
     {
